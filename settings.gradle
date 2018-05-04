@@ -1,0 +1,19 @@
+rootProject.name = 'mgdy'
+
+include 'vesta.common.result'
+include 'vesta.common.utility'
+include 'vesta.common.exception'
+include 'vesta.common.taglib'
+include 'vesta.common.task'
+include 'vesta.common.filter'
+
+include 'vesta.presentation.propertyAdmin'
+
+include 'vesta.domain.user'
+include 'vesta.repository.user'
+include 'vesta.application.user'
+include 'vesta.application.integratedManagement'
+include 'vesta.domain.integratedManagement'
+include 'vesta.repository.integratedManagement'
+
+

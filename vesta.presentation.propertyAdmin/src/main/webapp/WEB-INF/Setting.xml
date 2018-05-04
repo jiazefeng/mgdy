@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SettingConfig>
+
+  <!-- 1 -->
+  <!--数据库连接-->
+  <ConnectionString
+      dataSource="10.199.200.89\FIMDBSERVICE"
+      dbName="SSODB"
+      userID="NALD2CHVxSg="
+      password="avM6Nw/IMZtuxTExK6nE4g=="
+      providerName="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+  <!-- 4 -->
+  <!--Cookie的设置-->
+  <CookieDomains>
+    <domain name=".wanda-dev.cn"
+            regex=".*(.wanda-dev.cn)"
+            myHost="sso4pub.wanda-dev.cn"
+            loginUrl="http://sso4pub.wanda-dev.cn/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.wanda-dev.cn/Crossdomain.aspx"
+            defaultSite="http://m.sso4pub.wanda-dev.cn/">
+    </domain>
+    <domain name=".wanda-dev.com.cn"
+            regex=".*(.wanda-dev.com.cn)"
+            myHost="sso4pub.wanda-dev.com.cn"
+            loginUrl="http://sso4pub.wanda-dev.com.cn/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.wanda-dev.com.cn/Crossdomain.aspx"
+            defaultSite="http://sso4pub.wanda-dev.com.cn/">
+    </domain>
+    <domain name=".wandafilm-dev.com"
+            regex=".*(.wandafilm-dev.com)"
+            myHost="sso4pub.wandafilm-dev.com"
+            loginUrl="http://sso4pub.wandafilm-dev.com/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.wandafilm-dev.com/Crossdomain.aspx"
+            defaultSite="http://sso4pub.wandafilm-dev.com/">
+    </domain>
+    <domain name=".dagexing-dev.com"
+            regex=".*(.dagexing-dev.com)"
+            myHost="sso4pub.dagexing-dev.com"
+            loginUrl="http://sso4pub.dagexing-dev.com/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.dagexing-dev.com/Crossdomain.aspx"
+            defaultSite="http://sso4pub.dagexing-dev.com/">
+    </domain>
+    <domain name=".wandahotels-dev.com"
+            regex=".*(.wandahotels-dev.com)"
+            myHost="sso4pub.wandahotels-dev.com"
+            loginUrl="http://sso4pub.wandahotels-dev.com/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.wandahotels-dev.com/Crossdomain.aspx"
+            defaultSite="http://sso4pub.wandahotels-dev.com/">
+    </domain>
+    <domain name=".wandaperformance-dev.com"
+            regex=".*(.wandaperformance-dev.com)"
+            myHost="sso4pub.wandaperformance-dev.com"
+            loginUrl="http://sso4pub.wandaperformance-dev.com/LoginLight.aspx"
+            crossdomainUrl="http://sso4pub.wandaperformance-dev.com/Crossdomain.aspx"
+            defaultSite="http://sso4pub.wandaperformance-dev.com/">
+    </domain>
+    <domain name=".wandaresort-dev.com"
+        regex=".*(.wandaresort-dev.com)"
+        myHost="sso4pub.wandaresort-dev.com"
+        loginUrl="http://sso4pub.wandaresort-dev.com/LoginLight.aspx"
+        crossdomainUrl="http://sso4pub.wandaresort-dev.com/Crossdomain.aspx"
+        defaultSite="http://sso4pub.wandaresort-dev.com/">
+    </domain>
+  </CookieDomains>
+
+    <!--
+		系统中的地址，包括：
+		logonFlag:  0访问统一登录页面  1访问代理本地登录页面
+		loginUrl：登陆页面地址  代理本地 Java /login_sso.jsp  远程.net http://sso.wanda.cn/LoginLight.aspx?
+		errorUrl：错误页面地址  代理本地 Java /error_sso.jsp  远程.net http://sso.lcg.com.cn/Error.aspx
+		changePasswordUrl：修改密码地址
+	-->
+    <Urls logonFlag="0" logonUrl="http://sso4pub.wanda-dev.cn/LoginLight.aspx?"
+		errorUrl="/error_sso.jsp"
+		changePasswordUrl="http://sso4pub.wanda-dev.cn/changepassword.aspx?UserID="
+		defaulteurl="http://oadev1.wanda-dev.cn" />
+
+    <!--Java版本下格式有所区别-->
+    <!--用户信息设置 用户验证方式(活动目录还是数据库),值为 AD、DB -->
+    <UserConfiguration value="AD" />
+    
+    <!--Java版本下格式有所区别-->
+    <IncludeFileExtension
+    	ext_value=".*(\.ico$|\.gif$|\.jpg$|\.png$|\.bmp$|\.css$|\.js$|\.jsx$|/verifyImage$|/ssoLoginServlet$|/error_sso.jsp$|/wd_sso_logout$|/testLoginServlet$|/clientGetCookiesServlet$)"
+    	content_value=".*(/wd_sso_logout$)" />
+</SettingConfig>

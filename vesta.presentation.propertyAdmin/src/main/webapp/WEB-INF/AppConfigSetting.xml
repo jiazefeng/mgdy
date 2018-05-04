@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SettingConfig>
+
+    <!-- 系统基本参数 -->
+    <BasicString
+            tokenCheckFlag="N"
+            userIDTest="develop"
+            staffIDTest="develop" />
+</SettingConfig>

@@ -1,0 +1,61 @@
+package com.mgdy.vesta.application.house.DTO;
+
+/**
+ * Created by Jason on 2017/7/12.
+ */
+public class HouseWebDTO {
+    private String houseId;//房屋ID
+    private String houseType;//房屋类型
+    private String housePrice;//房屋价格
+    private String groupBuyingPrice;//团购价
+    private String houseDescribe;//房屋描述
+    private String houseImge;//首页展示图
+
+    public String getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(String houseId) {
+        this.houseId = houseId;
+    }
+
+    public String getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(String houseType) {
+        this.houseType = houseType;
+    }
+
+    public String getHousePrice() {
+        return housePrice;
+    }
+
+    public void setHousePrice(String housePrice) {
+        this.housePrice = housePrice;
+    }
+
+    public String getGroupBuyingPrice() {
+        return groupBuyingPrice;
+    }
+
+    public void setGroupBuyingPrice(String groupBuyingPrice) {
+        this.groupBuyingPrice = groupBuyingPrice;
+    }
+
+    public String getHouseDescribe() {
+        return houseDescribe;
+    }
+
+    public void setHouseDescribe(String houseDescribe) {
+        this.houseDescribe = houseDescribe;
+    }
+
+    public String getHouseImge() {
+        return houseImge;
+    }
+
+    public void setHouseImge(String houseImge) {
+        this.houseImge = houseImge;
+    }
+}

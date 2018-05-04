@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 启用注解 -->
+    <context:annotation-config/>
+
+    <!-- 启动组件扫描，排除@Controller组件，该组件由SpringMVC配置文件扫描 -->
+    <context:component-scan base-package="com.mgdy.vesta">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <import resource="classpath*:application-ws.xml" />
+
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 配置hibernateTemplate -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!-- c3p0 数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
+        <!--<property name="jdbcUrl"><value>jdbc:mysql://172.16.124.79:3306/vesta?characterEncoding=utf8</value></property>-->
+        <!--<property name="user" ><value>root</value></property>-->
+        <!--<property name="password" ><value>mysql</value></property>-->
+        <property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1:3306/mongolia?characterEncoding=utf8</value></property>
+        <property name="user" ><value>root</value></property>
+        <property name="password" ><value>123456</value></property>
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="5" />
+        <property name="maxStatements" value="10" />
+        <property name="idleConnectionTestPeriod" value="3000" />
+        <property name="loginTimeout" value="2000" />
+    </bean>
+
+    <!-- Hibernate Session jtaFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <!--<property name="packagesToScan" value="com.maxrocky.vesta.domain.model"/>-->
+        <property name="packagesToScan">
+            <list>
+                <value>com.mgdy.vesta.domain.model</value>
+                <value>com.mgdy.vesta.domain.*.model</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.current_session_context_class">jta</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!--<prop key="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory</prop>-->
+                <prop key="hibernate.transaction.factory_class">
+                    org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory
+                </prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>
