@@ -1,10 +1,14 @@
 package com.mgdy.vesta.application.viewSpot.impl;
 
 import com.mgdy.vesta.application.house.DTO.HouseDTO;
+import com.mgdy.vesta.application.house.DTO.HouseWebDTO;
 import com.mgdy.vesta.application.viewSpot.DTO.ViewSpotDTO;
 import com.mgdy.vesta.application.viewSpot.inf.ViewSpotService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
+import com.mgdy.vesta.domain.house.model.HouseEntity;
+import com.mgdy.vesta.domain.house.model.HouseImageEntity;
+import com.mgdy.vesta.domain.house.repository.HouseRepository;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.domain.viewSpot.model.ViewSpotEntity;
 import com.mgdy.vesta.domain.viewSpot.repository.ViewSpotRepository;
@@ -26,6 +30,8 @@ import java.util.*;
 public class ViewSpotServiceImpl implements ViewSpotService {
     @Autowired
     private ViewSpotRepository viewSpotRepository;
+    @Autowired
+    private HouseRepository houseRepository;
 
     @Override
     public List<ViewSpotDTO> getViewSpotDTOInfoList(ViewSpotDTO viewSpiotDTO, WebPage webPage, UserPropertyStaffEntity userPropertystaff) {
@@ -116,6 +122,7 @@ public class ViewSpotServiceImpl implements ViewSpotService {
     @Override
     public ApiResult getViewSpotInfo() {
         List<ViewSpotEntity> viewSpotEntityList = viewSpotRepository.getViewSpotInfoList();
+        List<HouseEntity> houseEntityList = houseRepository.getHouseInfoList("");
         List<ViewSpotDTO> viewSpotDTOList = new ArrayList<ViewSpotDTO>();//景色
         List<ViewSpotDTO> foodDTOList = new ArrayList<ViewSpotDTO>();//美食
         List<ViewSpotDTO> dispDTOList = new ArrayList<ViewSpotDTO>();//娱乐
@@ -126,19 +133,102 @@ public class ViewSpotServiceImpl implements ViewSpotService {
                 viewSpotDTO.setViewSpotTitle(viewSpotEntity.getViewSpotTitle());
                 viewSpotDTO.setViewSpotDescribe(viewSpotEntity.getViewSpotDescribe());
                 viewSpotDTO.setViewSpotImageUrl(viewSpotEntity.getViewSpotImageUrl());
-                if(viewSpotEntity.getClassify().equals("1")){
+
+                viewSpotDTO.setId(viewSpotEntity.getViewSpotId());
+                viewSpotDTO.setTitle(viewSpotEntity.getViewSpotTitle());
+                viewSpotDTO.setImageUrl(viewSpotEntity.getViewSpotImageUrl());
+                viewSpotDTO.setDescribe(viewSpotEntity.getViewSpotDescribe());
+                if (viewSpotEntity.getClassify().equals("1")) {
                     viewSpotDTOList.add(viewSpotDTO);
-                }else if(viewSpotEntity.getClassify().equals("2")){
+                } else if (viewSpotEntity.getClassify().equals("2")) {
                     foodDTOList.add(viewSpotDTO);
-                }else {
+                } else {
                     dispDTOList.add(viewSpotDTO);
                 }
+            }
+        }
+        List<HouseWebDTO> houseWebDTOS = new ArrayList<>();
+        if (houseEntityList.size() > 0 && houseEntityList != null) {
+            for (HouseEntity houseEntity : houseEntityList) {
+                HouseWebDTO houseWebDTO = new HouseWebDTO();
+                houseWebDTO.setId(houseEntity.getHouseId());
+                houseWebDTO.setImageUrl(houseEntity.getHouseImge());
+                if (houseEntity.getHouseType().equals("ECONOMICS")) {
+                    houseWebDTO.setTitle("二星级及以下/经济房");
+                }
+                if (houseEntity.getHouseType().equals("COMFORTABLE")) {
+                    houseWebDTO.setTitle("三星级/舒适房");
+                }
+                if (houseEntity.getHouseType().equals("HIGH_GRADE")) {
+                    houseWebDTO.setTitle("四星级/高档");
+                }
+                if (houseEntity.getHouseType().equals("LUCURY")) {
+                    houseWebDTO.setTitle("五星级/豪华房");
+                }
+                houseWebDTO.setDescribe(houseEntity.getHouseDescribe());
+
+                houseWebDTOS.add(houseWebDTO);
             }
         }
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("viewSpotInfoList", viewSpotDTOList);
         modelMap.addAttribute("foodInfoList", foodDTOList);
         modelMap.addAttribute("dispInfoList", dispDTOList);
+        modelMap.addAttribute("rooms", houseWebDTOS);
+        return new SuccessApiResult(modelMap);
+    }
+
+    @Override
+    public ApiResult getViewSpotInfoByIdAPI(String id) {
+        ViewSpotEntity viewSpotEntity = viewSpotRepository.getViewSpotInfoById(id);
+        ViewSpotDTO viewSpotDTO = null;
+        if (viewSpotEntity != null) {
+            viewSpotDTO = new ViewSpotDTO();
+            viewSpotDTO.setId(viewSpotEntity.getViewSpotId());
+            viewSpotDTO.setTitle(viewSpotEntity.getViewSpotTitle());
+            viewSpotDTO.setImageUrl(viewSpotEntity.getViewSpotImageUrl());
+            viewSpotDTO.setDescribe(viewSpotEntity.getViewSpotDescribe());
+
+            viewSpotDTO.setViewSpotId(viewSpotEntity.getViewSpotId());
+            viewSpotDTO.setClassify(viewSpotEntity.getClassify());
+            viewSpotDTO.setViewSpotTitle(viewSpotEntity.getViewSpotTitle());
+            viewSpotDTO.setViewSpotDescribe(viewSpotEntity.getViewSpotDescribe());
+            viewSpotDTO.setViewSpotImageUrl(viewSpotEntity.getViewSpotImageUrl());
+        }
+        HouseEntity houseEntity = houseRepository.getHouseInfoById(id);
+        List<HouseImageEntity> houseImageEntities = houseRepository.getHouseImageList();
+        HouseWebDTO houseDTO = null;
+        if (houseEntity != null) {
+            houseDTO = new HouseWebDTO();
+            houseDTO.setId(houseEntity.getHouseId());
+            if (houseEntity.getHouseType().equals("ECONOMICS")) {
+                houseDTO.setTitle("二星级及以下/经济房");
+            }
+            if (houseEntity.getHouseType().equals("COMFORTABLE")) {
+                houseDTO.setTitle("三星级/舒适房");
+            }
+            if (houseEntity.getHouseType().equals("HIGH_GRADE")) {
+                houseDTO.setTitle("四星级/高档");
+            }
+            if (houseEntity.getHouseType().equals("LUCURY")) {
+                houseDTO.setTitle("五星级/豪华房");
+            }
+            houseDTO.setDescribe(houseEntity.getHouseDescribe());
+            houseDTO.setImageUrl(houseEntity.getHouseImge());
+            if (houseImageEntities != null && houseImageEntities.size() > 0) {
+                List<String> list = new ArrayList<String>();
+                for (HouseImageEntity houseImageEntity : houseImageEntities) {
+                    if (houseImageEntity.getHouseId().equals(houseEntity.getHouseId())) {
+                        String imageUrl = houseImageEntity.getImgUrl();
+                        list.add(imageUrl);
+                    }
+                }
+                houseDTO.setImageUrls(list);
+            }
+        }
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("roomInfo", houseDTO);
+        modelMap.addAttribute("dataDetail", viewSpotDTO);
         return new SuccessApiResult(modelMap);
     }
 }

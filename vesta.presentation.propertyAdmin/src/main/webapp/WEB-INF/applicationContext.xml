@@ -37,7 +37,8 @@
         <!--<property name="jdbcUrl"><value>jdbc:mysql://172.16.124.79:3306/vesta?characterEncoding=utf8</value></property>-->
         <!--<property name="user" ><value>root</value></property>-->
         <!--<property name="password" ><value>mysql</value></property>-->
-        <property name="jdbcUrl"><value>jdbc:mysql://127.0.0.1:3306/mongolia?characterEncoding=utf8</value></property>
+        <!--<property name="jdbcUrl"><value>jdbc:mysql://211.83.242.116:3306/mongolia?characterEncoding=utf8</value></property>-->
+        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/mongolia?characterEncoding=utf8</value></property>
         <property name="user" ><value>root</value></property>
         <property name="password" ><value>123456</value></property>
         <property name="minPoolSize" value="5" />

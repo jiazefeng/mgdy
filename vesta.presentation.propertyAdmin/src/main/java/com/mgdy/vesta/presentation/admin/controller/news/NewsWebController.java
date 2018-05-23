@@ -109,4 +109,12 @@ public class NewsWebController {
     public ApiResult getTouristInfoList() {
         return userPropertystaffService.getTouristInfoList();
     }
+
+    /**
+     * 根据id查询新闻信息
+     */
+    @RequestMapping(value = "/getSortDetailByIdAPI/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+    public ApiResult getViewSpotInfoById(@PathVariable("id") String id) {
+        return viewSpotService.getViewSpotInfoByIdAPI(id);
+    }
 }

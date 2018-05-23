@@ -26,7 +26,7 @@ public class FileUpload {
         Map<String, Object> result = new HashMap<String, Object>();
         String fileName = "";
         String realPaht = req.getSession().getServletContext().getRealPath("/");
-        String returnPath = "http://localhost:8080/static/" + imgType + "/";
+        String returnPath = "http://211.83.242.102:8080/static/" + imgType + "/";
         try {
             fileName = file.getOriginalFilename();
             //如果服务器已经存在和上传文件同名的文件，则输出提示信息    

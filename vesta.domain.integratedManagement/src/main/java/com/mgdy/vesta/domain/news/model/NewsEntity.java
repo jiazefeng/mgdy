@@ -23,6 +23,9 @@ public class NewsEntity {
     private String modifyName;    //修改人
     private Date modifyDate;      //修改时间
 
+    private String latitude;//所在纬度
+    private String longitude;//所在经度
+
     @Id
     @Column(name = "NEWS_ID", length = 32)
     public String getNewsId() {
@@ -34,7 +37,7 @@ public class NewsEntity {
     }
 
     @Basic
-    @Column(name = "NEWS_TITLE", length = 200)
+    @Column(name = "NEWS_TITLE", length = 500)
     public String getNewsTitle() {
         return newsTitle;
     }
@@ -44,7 +47,7 @@ public class NewsEntity {
     }
 
     @Basic
-    @Column(name = "NEWS_IMGURL", length = 200)
+    @Column(name = "NEWS_IMGURL", length = 500)
     public String getNewsImgUrl() {
         return newsImgUrl;
     }
@@ -54,7 +57,7 @@ public class NewsEntity {
     }
 
     @Basic
-    @Column(name = "NEWS_CONTENT", length = 5000)
+    @Column(name = "NEWS_CONTENT", length = 10000)
     public String getNewsContent() {
         return newsContent;
     }
@@ -74,7 +77,7 @@ public class NewsEntity {
     }
 
     @Basic
-    @Column(name = "NEWS_SOURCE", length = 100)
+    @Column(name = "NEWS_SOURCE", length = 500)
     public String getNewsSource() {
         return newsSource;
     }
@@ -122,6 +125,7 @@ public class NewsEntity {
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
     }
+
     @Basic
     @Column(name = "NEWS_ORDER", length = 50)
     public String getOrder() {
@@ -130,5 +134,25 @@ public class NewsEntity {
 
     public void setOrder(String order) {
         this.order = order;
+    }
+
+    @Basic
+    @Column(name = "LATITUDE", length = 32)
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    @Basic
+    @Column(name = "LONGITUDE", length = 32)
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

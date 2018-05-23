@@ -44,7 +44,7 @@
     <link href="../static/css/animate.css" rel="stylesheet" type="text/css" media="all">
     <script src="../static/js/wow.min.js"></script>
     <script>
-        $(function(){
+        $(function () {
             $("#000100010000").addClass("active");
             $("#000100010000").parent().parent().addClass("in");
             $("#000100010000").parent().parent().parent().parent().addClass("active");
@@ -87,14 +87,8 @@
     <div class="forms">
         <div class="widget-shadow " data-example-id="basic-forms">
             <div class="form-body" style="overflow:hidden;font-size:13px;line-height:25px;font-family:'微软雅黑';">
-                <form class="form-horizontal" id="fromAdd" action="../news/addNews.html" method="post" enctype="multipart/form-data">
-                    <%-- 新闻来源 --%>
-                    <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label" for="newsSource">新闻来源</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" placeholder="" id="newsSource" name="newsSource">
-                        </div>
-                    </div>
+                <form class="form-horizontal" id="fromAdd" action="../news/addNews.html" method="post"
+                      enctype="multipart/form-data">
                     <%-- 新闻标题 --%>
                     <div class="form-group col-lg-7">
                         <label class="col-sm-3 control-label" for="newsTitle">新闻标题</label>
@@ -109,6 +103,28 @@
                             <input id="newsImgUpload" name="newsImgFile" type="file" multiple/>
                             <p style="color: red"><span>建议上传尺寸750×530</span></p>
                             <input type="hidden" id="newsImgUrl" name="newsImgUrl"/>
+                        </div>
+                    </div>
+                    <%-- 新闻来源 --%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="newsSource">新闻简介</label>
+                        <div class="col-sm-5">
+                            <textarea class="form-control" id="newsSource" name="newsSource"></textarea>
+                            <%--<input type="text" class="form-control" placeholder="" id="newsSource" name="newsSource">--%>
+                        </div>
+                    </div>
+                    <%-- 所在纬度--%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="newsSource">纬度</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="" id="latitude" name="latitude">
+                        </div>
+                    </div>
+                    <%-- 所在经度 --%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="newsSource">经度</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="" id="longitude" name="longitude">
                         </div>
                     </div>
                     <%-- 新闻详情 --%>
@@ -137,7 +153,7 @@
 <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript">
     //页面加载时执行
-    $(function(){
+    $(function () {
         initFileInput("newsImgUpload", "");
     });
 
@@ -161,7 +177,7 @@
             //minFileCount: 0,
             maxFileCount: 10, //表示允许同时上传的最大文件个数
             enctype: 'multipart/form-data',
-            validateInitialCount:true,
+            validateInitialCount: true,
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
         });
@@ -170,23 +186,23 @@
 <script type="text/javascript">
     //实例化编辑器
     <%--var newsContent = '${newsDTO.newsContent}';--%>
-    var ue = UE.getEditor( 'editor', {
+    var ue = UE.getEditor('editor', {
         toolbars: [[
-            'fullscreen', 'source', '|',,'undo', 'redo' , '|',
-            'bold', 'forecolor' , 'removeformat', 'autotypeset', 'pasteplain' , '|', '|',
-            'justifyleft', 'justifycenter' , '|',
-            'link', 'unlink' ,  '|',
-            'simpleupload','insertimage', '|',
-            'wordimage', '|' ,
-            'inserttable', 'insertrow' , 'deleterow', 'insertcol', 'deletecol' , 'mergecells', 'splittocells', '|' , 'mybtn1','mydialog1','scrawl'
+            'fullscreen', 'source', '|', , 'undo', 'redo', '|',
+            'bold', 'forecolor', 'removeformat', 'autotypeset', 'pasteplain', '|', '|',
+            'justifyleft', 'justifycenter', '|',
+            'link', 'unlink', '|',
+            'simpleupload', 'insertimage', '|',
+            'wordimage', '|',
+            'inserttable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'splittocells', '|', 'mybtn1', 'mydialog1', 'scrawl'
         ]],
         autoHeightEnabled: true,
         autoFloatEnabled: true,
-        zIndex:99,
+        zIndex: 99,
         initialFrameWidth: 800,
         initialFrameHeight: 500,
-        topOffset:100,
-        toolbarTopOffset:400
+        topOffset: 100,
+        toolbarTopOffset: 400
 //        initialContent: newsContent
     });
     function isFocus(e) {
@@ -290,7 +306,7 @@
         alert("已清空草稿箱")
     }
     UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-    UE.Editor.prototype.getActionUrl = function(action) {
+    UE.Editor.prototype.getActionUrl = function (action) {
         if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage') {
             return '${baseUrl}../news/uploadImage/newsImage';
         } else if (action == 'uploadvideo') {
@@ -301,8 +317,8 @@
     }
 
     //发布
-    function toSave(){
-        if($("#newsTitle").val().replace(/(^s*)|(s*$)/g, "").length == 0){
+    function toSave() {
+        if ($("#newsTitle").val().replace(/(^s*)|(s*$)/g, "").length == 0) {
             alert("请输入新闻标题！");
             return;
         }

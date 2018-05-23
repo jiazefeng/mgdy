@@ -91,14 +91,6 @@
                       enctype="multipart/form-data">
                     <input type="hidden" name="newsId" value="${newsInfo.newsId}">
 
-                    <%-- 新闻来源 --%>
-                    <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label" for="newsSource">新闻来源</label>
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" placeholder="" id="newsSource" name="newsSource"
-                                   value="${newsInfo.newsSource}">
-                        </div>
-                    </div>
                     <%-- 新闻标题 --%>
                     <div class="form-group col-lg-7">
                         <label class="col-sm-3 control-label" for="newsTitle">新闻标题</label>
@@ -122,6 +114,29 @@
                             <p style="color: red"><span>建议上传尺寸750×530</span></p>
                             <input type="hidden" id="newsImgUrl" name="newsImgUrl" value="${newsInfo.newsImgUrl}"/>
                             <img src="${newsInfo.newsImgUrl}" alt="原新闻展示图" class="img-thumbnail" style="width: auto">
+                        </div>
+                    </div>
+
+                    <%-- 新闻来源 --%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="newsSource">新闻来源</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="" id="newsSource" name="newsSource"
+                                   value="${newsInfo.newsSource}">
+                        </div>
+                    </div>
+                    <%-- 所在纬度--%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="latitude">纬度</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="" id="latitude" name="latitude" value="${newsInfo.latitude}">
+                        </div>
+                    </div>
+                    <%-- 所在经度 --%>
+                    <div class="form-group col-lg-7">
+                        <label class="col-sm-3 control-label" for="longitude">经度</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" placeholder="" id="longitude" name="longitude" value="${newsInfo.longitude}">
                         </div>
                     </div>
                     <%-- 新闻详情 --%>

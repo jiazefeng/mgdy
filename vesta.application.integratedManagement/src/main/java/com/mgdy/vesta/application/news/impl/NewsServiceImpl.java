@@ -54,6 +54,8 @@ public class NewsServiceImpl implements NewsService {
                 newsDTO1.setCreateName(newsEntity.getCreateName());
                 newsDTO1.setSlideShow(newsEntity.getSlideShow());
                 newsDTO1.setCreateDate(DateUtils.format(newsEntity.getCreateDate(), DateUtils.FORMAT_LONG));
+                newsDTO1.setLatitude(newsEntity.getLatitude());
+                newsDTO1.setLongitude(newsEntity.getLongitude());
                 newsDTOS.add(newsDTO1);
             }
         }
@@ -68,6 +70,8 @@ public class NewsServiceImpl implements NewsService {
             newsEntity.setNewsTitle(newsDTO.getNewsTitle());
             newsEntity.setNewsSource(newsDTO.getNewsSource());
             newsEntity.setNewsContent(newsDTO.getNewsContent());
+            newsEntity.setLatitude(newsDTO.getLatitude());
+            newsEntity.setLongitude(newsDTO.getLongitude());
             newsEntity.setCreateDate(new Date());
             newsEntity.setCreateName(userPropertystaffEntity.getStaffName());
             newsEntity.setModifyDate(new Date());
@@ -141,6 +145,8 @@ public class NewsServiceImpl implements NewsService {
             newsDTO.setNewsImgUrl(newsEntity.getNewsImgUrl());
             newsDTO.setNewsContent(newsEntity.getNewsContent());
             newsDTO.setSlideShow(newsEntity.getSlideShow());
+            newsDTO.setLatitude(newsEntity.getLatitude());
+            newsDTO.setLongitude(newsEntity.getLongitude());
             return newsDTO;
         }
         return null;
@@ -154,6 +160,8 @@ public class NewsServiceImpl implements NewsService {
             newsEntity.setNewsTitle(newsDTO.getNewsTitle());
             newsEntity.setNewsSource(newsDTO.getNewsSource());
             newsEntity.setNewsContent(newsDTO.getNewsContent());
+            newsEntity.setLatitude(newsDTO.getLatitude());
+            newsEntity.setLongitude(newsDTO.getLongitude());
             newsEntity.setModifyDate(new Date());
             newsEntity.setModifyName(userPropertystaffEntity.getStaffName());
             if (null != newsImgFile) {
@@ -207,6 +215,7 @@ public class NewsServiceImpl implements NewsService {
         List<NewsEntity> newsEntityList = newsRepository.getNewsList();
         List<NewsWebDTO> newsWebDTOS = new ArrayList<NewsWebDTO>();
         List<NewsWebDTO> slideShowDTOS = new ArrayList<NewsWebDTO>();
+        List<NewsWebDTO> grasslands = new ArrayList<NewsWebDTO>();
         if (newsEntityList != null) {
             for (NewsEntity newsEntity : newsEntityList) {
                 NewsWebDTO newsWebDTO = new NewsWebDTO();
@@ -214,7 +223,7 @@ public class NewsServiceImpl implements NewsService {
                 newsWebDTO.setNewsTitle(newsEntity.getNewsTitle());
                 newsWebDTO.setNewsImgUrl(newsEntity.getNewsImgUrl());
                 newsWebDTO.setNewsContent(newsEntity.getNewsContent());
-                newsWebDTO.setCreateDate(DateUtils.format(newsEntity.getCreateDate(),"yyyy-MM-dd"));
+                newsWebDTO.setCreateDate(DateUtils.format(newsEntity.getCreateDate(), "yyyy-MM-dd"));
                 if (newsEntity.getSlideShow().equals("1")) {
                     NewsWebDTO newsWebDTO1 = new NewsWebDTO();
                     newsWebDTO1.setNewsId(newsEntity.getNewsId());
@@ -222,12 +231,20 @@ public class NewsServiceImpl implements NewsService {
                     newsWebDTO1.setNewsImgUrl(newsEntity.getNewsImgUrl());
                     newsWebDTO1.setNewsContent(newsEntity.getNewsContent());
                     slideShowDTOS.add(newsWebDTO1);
+                } else {
+                    NewsWebDTO newsWebDTO2 = new NewsWebDTO();
+                    newsWebDTO2.setId(newsEntity.getNewsId());
+                    newsWebDTO2.setTitle(newsEntity.getNewsTitle());
+                    newsWebDTO2.setImageUrl(newsEntity.getNewsImgUrl());
+                    newsWebDTO2.setSummary(newsEntity.getNewsSource());
+                    grasslands.add(newsWebDTO2);
                 }
                 newsWebDTOS.add(newsWebDTO);
             }
         }
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("newsList", newsWebDTOS);
+        modelMap.addAttribute("grasslands", grasslands);
         modelMap.addAttribute("slideShowList", slideShowDTOS);
         return new SuccessApiResult(modelMap);
     }
@@ -244,9 +261,17 @@ public class NewsServiceImpl implements NewsService {
             newsWebDTO.setNewsContent(newsEntity.getNewsContent());
             newsWebDTO.setCreateDate(DateUtils.format(newsEntity.getCreateDate(), "yyyy"));
             newsWebDTO.setCreateTime(DateUtils.format(newsEntity.getCreateDate(), "MM-dd"));
+
+            newsWebDTO.setId(newsEntity.getNewsId());
+            newsWebDTO.setTitle(newsEntity.getNewsTitle());
+            newsWebDTO.setImageUrl(newsEntity.getNewsImgUrl());
+            newsWebDTO.setContent(newsEntity.getNewsContent());
+            newsWebDTO.setLatitude(newsEntity.getLatitude());
+            newsWebDTO.setLongitude(newsEntity.getLongitude());
         }
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("newsInfo", newsWebDTO);
+        modelMap.addAttribute("dataDetail", newsWebDTO);
         return new SuccessApiResult(modelMap);
     }
 }

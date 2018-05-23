@@ -166,6 +166,7 @@ public class HouseServiceImpl implements HouseService {
         List<HouseWebDTO> comfortableHouseList = new ArrayList<HouseWebDTO>();
         List<HouseWebDTO> highgradeHouseList = new ArrayList<HouseWebDTO>();
         List<HouseWebDTO> lucuryHouseList = new ArrayList<HouseWebDTO>();
+        List<HouseWebDTO> houseWebDTOS = new ArrayList<>();
         if (houseEntityList != null) {
             for (HouseEntity houseEntity : houseEntityList) {
                 if (houseEntity.getHouseType().equals("ECONOMICS")) {//经济房
@@ -208,9 +209,28 @@ public class HouseServiceImpl implements HouseService {
                     lucuryHouseDTO.setHouseImge(houseEntity.getHouseImge());
                     lucuryHouseList.add(lucuryHouseDTO);
                 }
+                HouseWebDTO houseWebDTO = new HouseWebDTO();
+                houseWebDTO.setId(houseEntity.getHouseId());
+                houseWebDTO.setImageUrl(houseEntity.getHouseImge());
+                if (houseEntity.getHouseType().equals("ECONOMICS")) {
+                    houseWebDTO.setTitle("二星级及以下/经济房");
+                }
+                if (houseEntity.getHouseType().equals("COMFORTABLE")) {
+                    houseWebDTO.setTitle("三星级/舒适房");
+                }
+                if (houseEntity.getHouseType().equals("HIGH_GRADE")) {
+                    houseWebDTO.setTitle("四星级/高档");
+                }
+                if (houseEntity.getHouseType().equals("LUCURY")) {
+                    houseWebDTO.setTitle("五星级/豪华房");
+                }
+                houseWebDTO.setDescribe(houseEntity.getHouseDescribe());
+
+                houseWebDTOS.add(houseWebDTO);
             }
         }
         ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("rooms", houseWebDTOS);
         if (lucuryHouseList != null && lucuryHouseList.size() > 0) {
             modelMap.addAttribute("lucuryHouse", lucuryHouseList.get(0));
         }

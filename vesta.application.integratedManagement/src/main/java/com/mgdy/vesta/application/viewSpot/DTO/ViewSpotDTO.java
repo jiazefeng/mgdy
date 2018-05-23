@@ -14,6 +14,10 @@ public class ViewSpotDTO {
     private String modifyBy;//修改人
     private String classify;//分类 1：美景；2：美食；3：娱乐
 
+    private String id;
+    private String title;
+    private String imageUrl;
+    private String describe;
     public String getViewSpotId() {
         return viewSpotId;
     }
@@ -84,5 +88,37 @@ public class ViewSpotDTO {
 
     public void setClassify(String classify) {
         this.classify = classify;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }

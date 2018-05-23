@@ -41,7 +41,7 @@ public class ViewSpotEntity {
     }
 
     @Basic
-    @Column(name = "VIEW_SPOT_DESCRIBE", length = 2000)
+    @Column(name = "VIEW_SPOT_DESCRIBE", length = 10000)
     public String getViewSpotDescribe() {
         return viewSpotDescribe;
     }
@@ -51,7 +51,7 @@ public class ViewSpotEntity {
     }
 
     @Basic
-    @Column(name = "VIEW_SPOT_IMAGE_URL", length = 100)
+    @Column(name = "VIEW_SPOT_IMAGE_URL", length = 500)
     public String getViewSpotImageUrl() {
         return viewSpotImageUrl;
     }

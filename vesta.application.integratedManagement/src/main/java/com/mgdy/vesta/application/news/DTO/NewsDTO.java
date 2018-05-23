@@ -15,6 +15,24 @@ public class NewsDTO {
     private String createDate;      //创建时间
     private String modifyName;    //修改人
     private String modifyDate;      //修改时间
+    private String latitude;//所在纬度
+    private String longitude;//所在经度
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
     public String getNewsId() {
         return newsId;

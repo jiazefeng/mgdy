@@ -107,7 +107,9 @@
             <tr>
                 <td>序号</td>
                 <th>新闻标题</th>
-                <th>新闻来源</th>
+                <th width="50%">新闻简介</th>
+                <th>所在纬度</th>
+                <th>所在经度</th>
                 <th>发布时间</th>
                 <th>发布人</th>
                 <th>操作</th>
@@ -119,6 +121,8 @@
                     <td><b>${(webPage.pageIndex-1)*20+row.index + 1}</b></td>
                     <td>${news.newsTitle}</td>
                     <td>${news.newsSource}</td>
+                    <td>${news.latitude}</td>
+                    <td>${news.longitude}</td>
                     <td>${news.createDate}</td>
                     <td>${news.createName}</td>
                     <td class="last">

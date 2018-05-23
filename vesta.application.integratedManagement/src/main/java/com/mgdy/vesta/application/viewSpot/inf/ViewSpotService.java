@@ -67,4 +67,6 @@ public interface ViewSpotService {
      * @return
      */
     ApiResult getViewSpotInfo();
+
+    ApiResult getViewSpotInfoByIdAPI(String id);
 }
