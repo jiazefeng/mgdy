@@ -8,6 +8,7 @@ import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.taglib.page.WebPage;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +37,8 @@ import java.util.Map;
 public class NewsController {
     @Autowired
     private NewsService newsService;
-
+    @Value("${IMAGE_SERVER_URL}")
+    private String IMAGE_SERVER_URL;
     /**
      * 分页获取新闻列表
      *
@@ -78,7 +80,7 @@ public class NewsController {
                           @RequestParam(value = "newsImgFile", required = false) MultipartFile newsImgFile,
                           NewsDTO newsDTO, Model model, HttpServletRequest req) {
         String imgType = "newsImage";
-        newsService.addNews(newsDTO, newsImgFile, userPropertystaffEntity, req, imgType);
+        newsService.addNews(newsDTO, newsImgFile, userPropertystaffEntity, req, imgType,IMAGE_SERVER_URL);
         return "redirect:../news/getNewsList.html";
     }
 
@@ -91,7 +93,7 @@ public class NewsController {
     public void createMerPicture(@PathVariable("imgType") String imgType, @RequestParam(value = "file", required = false) MultipartFile file,
                                  Model model, HttpServletRequest request, HttpServletResponse response) {
         String imageType = imgType;
-        newsService.uploadImage(file, request, imageType, response);
+        newsService.uploadImage(file, request, imageType, response,IMAGE_SERVER_URL);
     }
 
     /**
@@ -118,7 +120,7 @@ public class NewsController {
                              @RequestParam(value = "newsImgFile", required = false) MultipartFile newsImgFile,
                              NewsDTO newsDTO, Model model, HttpServletRequest req) {
         String imgType = "newsImage";
-        newsService.updateNews(newsDTO, newsImgFile, userPropertystaffEntity, req, imgType);
+        newsService.updateNews(newsDTO, newsImgFile, userPropertystaffEntity, req, imgType,IMAGE_SERVER_URL);
         return "redirect:../news/getNewsList.html";
     }
 

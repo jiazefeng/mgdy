@@ -6,6 +6,7 @@ import com.mgdy.vesta.application.DTO.UserPropertystaffDTO;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.domain.model.RoleViewmodelEntity;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
+import com.mgdy.vesta.domain.model.UserTokenEntity;
 import com.mgdy.vesta.taglib.page.WebPage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -203,4 +204,6 @@ public interface UserPropertystaffService {
      * @return
      */
     ApiResult getTouristInfoList();
+
+    UserTokenEntity GetLoginByWeChatCode(String code);
 }

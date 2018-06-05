@@ -1,6 +1,5 @@
 package com.mgdy.vesta.application.news.impl;
 
-import com.maxrocky.vesta.application.service.inf.ImgService;
 import com.maxrocky.vesta.setting.ImageConfig;
 import com.mgdy.vesta.application.news.DTO.NewsDTO;
 import com.mgdy.vesta.application.news.DTO.NewsWebDTO;
@@ -14,10 +13,8 @@ import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.DateUtils;
 import com.mgdy.vesta.utility.IdGen;
 import com.mgdy.vesta.utility.ImgUpdate.FileUpload;
-import com.mgdy.vesta.utility.ImgUpdate.ImgType;
-import org.apache.commons.collections.map.HashedMap;
+import com.mgdy.vesta.utility.UploadFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,7 +60,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void addNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType) {
+    public void addNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
         if (newsDTO != null) {
             NewsEntity newsEntity = new NewsEntity();
             newsEntity.setNewsId(IdGen.uuid());
@@ -79,7 +76,8 @@ public class NewsServiceImpl implements NewsService {
             newsEntity.setSlideShow("0");
             //设置信息标识图
             if (null != newsImgFile) {
-                String newsImgUrl = FileUpload.upload(req, newsImgFile, imgType);
+//                String newsImgUrl = FileUpload.upload(req, newsImgFile, imgType);
+                String newsImgUrl = UploadFile.imgUpload(newsImgFile, IMAGE_SERVER_URL);
 //                if (newsImgUrl.lastIndexOf("/") != newsImgUrl.length()-1){
                 newsEntity.setNewsImgUrl(newsImgUrl);
 //                }
@@ -89,13 +87,14 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void uploadImage(MultipartFile file, HttpServletRequest request, String imageType, HttpServletResponse response) {
+    public void uploadImage(MultipartFile file, HttpServletRequest request, String imageType, HttpServletResponse response, String IMAGE_SERVER_URL) {
         Map<String, Object> resultmap = new HashMap<String, Object>();
         try {
             LinkedList<MultipartFile> upfileMap = (LinkedList<MultipartFile>) ((DefaultMultipartHttpServletRequest) request).getMultiFileMap().get("upfile");
             for (MultipartFile tempfile : upfileMap) {
                 //图片上传
-                String fileName = FileUpload.upload(request, tempfile, imageType);
+                String fileName = UploadFile.imgUpload(tempfile, IMAGE_SERVER_URL);
+//                String fileName = FileUpload.upload(request, tempfile, imageType);
 //                String fileName = imgService.uploadAdminImage(tempfile, ImgType.ACTIVITY);
 //                String urlTitle = ImageConfig.PIC_OSS_ADMIN_URL;
                 String fileNameNote = fileName.replace(ImageConfig.PIC_SERVER_ADMIN_URL, "");
@@ -153,7 +152,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void updateNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType) {
+    public void updateNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
 
         NewsEntity newsEntity = newsRepository.getNewsInfoById(newsDTO.getNewsId());
         if (newsEntity != null) {
@@ -164,8 +163,9 @@ public class NewsServiceImpl implements NewsService {
             newsEntity.setLongitude(newsDTO.getLongitude());
             newsEntity.setModifyDate(new Date());
             newsEntity.setModifyName(userPropertystaffEntity.getStaffName());
-            if (null != newsImgFile) {
-                String newsImgUrl = FileUpload.upload(req, newsImgFile, imgType);
+            if (null != newsImgFile && !newsImgFile.isEmpty()) {
+                String newsImgUrl = UploadFile.imgUpload(newsImgFile, IMAGE_SERVER_URL);
+//                String newsImgUrl = FileUpload.upload(req, newsImgFile, imgType);
                 newsEntity.setNewsImgUrl(newsImgUrl);
             }
             //设置信息标识图

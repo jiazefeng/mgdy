@@ -6,10 +6,7 @@ import com.mgdy.vesta.application.DTO.UserPropertystaffDTO;
 import com.mgdy.vesta.application.inf.UserPropertystaffService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
-import com.mgdy.vesta.domain.model.RoleViewmodelEntity;
-import com.mgdy.vesta.domain.model.TeamEntity;
-import com.mgdy.vesta.domain.model.TouristEntity;
-import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
+import com.mgdy.vesta.domain.model.*;
 import com.mgdy.vesta.domain.repository.UserPropertyStaffRepository;
 import com.mgdy.vesta.secret.Md5Util;
 import com.mgdy.vesta.taglib.page.WebPage;
@@ -422,5 +419,30 @@ public class UserPropertystaffServiceImpl implements UserPropertystaffService {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("touristInfoList", touristDTOS);
         return new SuccessApiResult(modelMap);
+    }
+
+    @Override
+    public UserTokenEntity GetLoginByWeChatCode(String code) {
+        System.out.println("-----通过code换取网页授权access_token-----");
+//        2 第二步：通过code换取网页授权access_token
+        ClientAccessToken clientAccessToken = WeixinUtil.authorizationUser(code);
+        if (clientAccessToken == null) {
+            return null;
+        }
+//        3 第三步：刷新access_token（如果需要）---在内部方法中刷新，此处不需要
+
+//        4 第四步：拉取用户信息(需scope为 snsapi_userinfo)
+        System.out.println("-----拉取用户信息(需scope为 snsapi_userinfo)-----");
+        WeChatUser wechatuser = WeixinUtil.getWeChatUser(clientAccessToken);
+        if (wechatuser == null) {
+            return null;
+        }
+//        5 附：检验授权凭证（access_token）是否有效
+        /**
+         * 第六步  与系统用户匹配--------start
+         */
+
+        System.out.println("-----判断该openid是否已经创建过用户-----");
+        return null;
     }
 }

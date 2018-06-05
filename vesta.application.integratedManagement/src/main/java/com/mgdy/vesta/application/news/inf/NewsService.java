@@ -26,20 +26,20 @@ public interface NewsService {
 
     /**
      * 发布新闻
-     *
-     * @param newsDTO
+     *  @param newsDTO
      * @param newsImgFile
      * @param userPropertystaffEntity
+     * @param IMAGE_SERVER_URL
      */
-    void addNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType);
+    void addNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 上传图片（对富文本编辑器做处理）
-     *
-     * @param file
+     *  @param file
      * @param request
+     * @param IMAGE_SERVER_URL
      */
-    void uploadImage(MultipartFile file, HttpServletRequest request, String imageType, HttpServletResponse response);
+    void uploadImage(MultipartFile file, HttpServletRequest request, String imageType, HttpServletResponse response, String IMAGE_SERVER_URL);
 
     /**
      * 根据ID查询详情
@@ -51,14 +51,14 @@ public interface NewsService {
 
     /**
      * 编辑新闻
-     *
-     * @param newsDTO
+     *  @param newsDTO
      * @param newsImgFile
      * @param userPropertystaffEntity
      * @param req
      * @param imgType
+     * @param IMAGE_SERVER_URL
      */
-    void updateNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType);
+    void updateNews(NewsDTO newsDTO, MultipartFile newsImgFile, UserPropertyStaffEntity userPropertystaffEntity, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 删除新闻

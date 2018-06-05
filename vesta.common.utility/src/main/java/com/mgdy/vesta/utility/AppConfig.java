@@ -31,8 +31,8 @@ public class AppConfig {
 //    public static String AppID = "wxef8bb338b710624f";//【必】微信分配的公众账号ID（企业号corpid即为此appId）
 //    public static String AppSecret = "acdd6a035b3b71c6a0b9fb7d2ac826c6";//
     //测试
-    public static String AppID = "wxf6199dd272dfce1e";//【必】微信分配的公众账号ID（企业号corpid即为此appId）
-    public static String AppSecret = "34c6752b1d86f1ee464733593b23e9b5";//
+    public static String AppID = "wx777e65ff866291bf";//【必】微信分配的公众账号ID（企业号corpid即为此appId）
+    public static String AppSecret = "dacea62be98f6c0b5f5ceabec81e2f4a";//
 
     public static String AppID_APP = "";//wx6beeb23e47112fcf
     public static String AppSecrt_APP= "";//cd4d922bc02ad7784f17379ef5b20201
