@@ -364,4 +364,6 @@ public interface UserPropertyStaffRepository {
      * @return
      */
     List<TouristEntity> getTouristInfoList();
+
+    UserPropertyStaffEntity GetUserByOpenId(String wc, String openid);
 }

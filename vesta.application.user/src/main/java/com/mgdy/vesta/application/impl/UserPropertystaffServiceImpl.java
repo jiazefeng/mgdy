@@ -3,16 +3,16 @@ package com.mgdy.vesta.application.impl;
 import com.mgdy.vesta.application.DTO.TeamDTO;
 import com.mgdy.vesta.application.DTO.TouristDTO;
 import com.mgdy.vesta.application.DTO.UserPropertystaffDTO;
+import com.mgdy.vesta.application.DTO.WechatDTO;
 import com.mgdy.vesta.application.inf.UserPropertystaffService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
+import com.mgdy.vesta.common.restHTTPResult.ErrorApiResult;
 import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
 import com.mgdy.vesta.domain.model.*;
 import com.mgdy.vesta.domain.repository.UserPropertyStaffRepository;
-import com.mgdy.vesta.secret.Md5Util;
 import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.*;
 import com.mgdy.vesta.utility.ImgUpdate.FileUpload;
-import com.mgdy.vesta.utility.ImgUpdate.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -422,27 +422,54 @@ public class UserPropertystaffServiceImpl implements UserPropertystaffService {
     }
 
     @Override
-    public UserTokenEntity GetLoginByWeChatCode(String code) {
+    public ApiResult GetLoginByWeChatCode(String code, WechatDTO wechatDTO) {
         System.out.println("-----通过code换取网页授权access_token-----");
-//        2 第二步：通过code换取网页授权access_token
+        // 通过code换取网页授权access_token
         ClientAccessToken clientAccessToken = WeixinUtil.authorizationUser(code);
         if (clientAccessToken == null) {
+            System.out.println("-----判断该openid是否已经创建过用户-----");
             return null;
         }
-//        3 第三步：刷新access_token（如果需要）---在内部方法中刷新，此处不需要
-
-//        4 第四步：拉取用户信息(需scope为 snsapi_userinfo)
-        System.out.println("-----拉取用户信息(需scope为 snsapi_userinfo)-----");
-        WeChatUser wechatuser = WeixinUtil.getWeChatUser(clientAccessToken);
-        if (wechatuser == null) {
-            return null;
+        ModelMap result = new ModelMap();
+        UserPropertyStaffEntity openId = userPropertystaffReposiroty.GetUserByOpenId("wx", clientAccessToken.getOpenid());
+        if (openId == null) {
+            UserPropertyStaffEntity userPropertyStaffEntity = new UserPropertyStaffEntity();
+            userPropertyStaffEntity.setStaffId(IdGen.uuid());
+            userPropertyStaffEntity.setWC_nickName(wechatDTO.getNickName());
+            userPropertyStaffEntity.setLogo(wechatDTO.getAvatarUrl());
+            userPropertyStaffEntity.setSex(wechatDTO.getGender());
+            userPropertyStaffEntity.setCity(wechatDTO.getCity());
+            userPropertyStaffEntity.setCountry(wechatDTO.getCountry());
+            userPropertyStaffEntity.setLanguage(wechatDTO.getLanguage());
+            userPropertyStaffEntity.setSessionKey(clientAccessToken.getAccesstoken());
+            userPropertyStaffEntity.setOpenId(clientAccessToken.getOpenid());
+            userPropertyStaffEntity.setProvince(wechatDTO.getProvince());
+            userPropertyStaffEntity.setCreateOn(new Date());
+            userPropertyStaffEntity.setSourceType("wx");
+            userPropertyStaffEntity.setStaffState("1");
+            boolean f = userPropertystaffReposiroty.addStaff(userPropertyStaffEntity);
+            if (f) {
+                result.addAttribute("userId", userPropertyStaffEntity.getStaffId());
+            } else {
+                return new ErrorApiResult(20202, "code is invalid!");
+            }
+        } else {
+            openId.setWC_nickName(wechatDTO.getNickName());
+            openId.setLogo(wechatDTO.getAvatarUrl());
+            openId.setSex(wechatDTO.getGender());
+            openId.setCity(wechatDTO.getCity());
+            openId.setCountry(wechatDTO.getCountry());
+            openId.setLanguage(wechatDTO.getLanguage());
+            openId.setSessionKey(clientAccessToken.getAccesstoken());
+            openId.setProvince(wechatDTO.getProvince());
+            openId.setModifyOn(new Date());
+            boolean f = userPropertystaffReposiroty.updateStaff(openId);
+            if (f) {
+                result.addAttribute("userId", openId.getStaffId());
+            } else {
+                return new ErrorApiResult(20202, "code is invalid!");
+            }
         }
-//        5 附：检验授权凭证（access_token）是否有效
-        /**
-         * 第六步  与系统用户匹配--------start
-         */
-
-        System.out.println("-----判断该openid是否已经创建过用户-----");
-        return null;
+        return new SuccessApiResult(result);
     }
 }

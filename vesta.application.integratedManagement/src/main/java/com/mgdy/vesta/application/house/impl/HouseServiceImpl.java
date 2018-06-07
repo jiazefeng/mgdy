@@ -13,7 +13,7 @@ import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.IdGen;
 import com.mgdy.vesta.utility.ImgUpdate.FileUpload;
-import freemarker.ext.beans.MapModel;
+import com.mgdy.vesta.utility.UploadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -50,7 +50,7 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public void saveHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType) {
+    public void saveHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
         if (houseDTO != null) {
             HouseEntity houseEntity = new HouseEntity();
             houseEntity.setHouseId(IdGen.uuid());
@@ -64,7 +64,8 @@ public class HouseServiceImpl implements HouseService {
             houseEntity.setModifyBy(userPropertystaffEntity.getModifyBy());
             houseEntity.setModifyOn(new Date());
             if (!homePageimgFile.isEmpty()) {
-                String houseImgUrl = FileUpload.upload(req, homePageimgFile, imgType);
+//                String houseImgUrl = FileUpload.upload(req, homePageimgFile, imgType);
+                String houseImgUrl = UploadFile.imgUpload(homePageimgFile, IMAGE_SERVER_URL);
                 houseEntity.setHouseImge(houseImgUrl);
             }
             boolean f = houseRepository.addHouse(houseEntity);
@@ -113,7 +114,7 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
-    public void updateHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType) {
+    public void updateHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
         HouseEntity houseEntity = houseRepository.getHouseInfoById(houseDTO.getHouseId());
         if (houseEntity != null) {
             houseEntity.setHouseType(houseDTO.getHouseType());
@@ -123,7 +124,8 @@ public class HouseServiceImpl implements HouseService {
             houseEntity.setModifyBy(userPropertystaffEntity.getModifyBy());
             houseEntity.setModifyOn(new Date());
             if (!homePageimgFile.isEmpty()) {
-                String houseImgUrl = FileUpload.upload(req, homePageimgFile, imgType);
+//                String houseImgUrl = FileUpload.upload(req, homePageimgFile, imgType);
+                String houseImgUrl = UploadFile.imgUpload(homePageimgFile, IMAGE_SERVER_URL);
                 houseEntity.setHouseImge(houseImgUrl);
             }
             boolean f = houseRepository.updateHouse(houseEntity);

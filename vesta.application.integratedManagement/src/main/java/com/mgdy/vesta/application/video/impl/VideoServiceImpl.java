@@ -5,8 +5,10 @@ import com.mgdy.vesta.application.video.DTO.VideoReturnDTO;
 import com.mgdy.vesta.application.video.inf.VideoService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
+import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.domain.video.model.VideoEntity;
 import com.mgdy.vesta.domain.video.repository.VideoRepository;
+import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.DateUtils;
 import com.mgdy.vesta.utility.IdGen;
 import com.mgdy.vesta.utility.ImgUpdate.FileUpload;
@@ -50,6 +52,7 @@ public class VideoServiceImpl implements VideoService {
 
             videoEntity.setAvatarUrl(videoDTO.getAvatarUrl());
             videoEntity.setCreateName(videoDTO.getNickName());
+            videoEntity.setUserId(videoDTO.getUserId());
             videoRepository.add(videoEntity);
 
             ModelMap modelMap = new ModelMap();
@@ -75,20 +78,61 @@ public class VideoServiceImpl implements VideoService {
 
                 videoReturnDTOS.add(videoReturnDTO);
             }
-//            videoEntityList.forEach(videoEntity -> {
-//                VideoReturnDTO videoReturnDTO = new VideoReturnDTO();
-//                videoReturnDTO.setId(videoEntity.getvId());
-//                videoReturnDTO.setProfile_image(videoEntity.getAvatarUrl());
-//                videoReturnDTO.setName(videoEntity.getCreateName());
-//                videoReturnDTO.setText(videoEntity.getvContent());
-//                videoReturnDTO.setCreate_time(DateUtils.format(videoEntity.getCreateDate(), DateUtils.FORMAT_LONG));
-//                videoReturnDTO.setVideo_uri(videoEntity.getvUrl());
-//
-//                videoReturnDTOS.add(videoReturnDTO);
-//            });
+
         }
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("videos", videoReturnDTOS);
         return new SuccessApiResult(modelMap);
+    }
+
+    @Override
+    public ApiResult getVideosByUserId(String userId) {
+        List<VideoEntity> videoEntityList = videoRepository.getVideosByUserId(userId);
+        List<VideoReturnDTO> videoReturnDTOS = new ArrayList<>();
+        videoEntityList.forEach(videoEntity -> {
+            VideoReturnDTO videoReturnDTO = new VideoReturnDTO();
+            videoReturnDTO.setId(videoEntity.getvId());
+            videoReturnDTO.setProfile_image(videoEntity.getAvatarUrl());
+            videoReturnDTO.setName(videoEntity.getCreateName());
+            videoReturnDTO.setText(videoEntity.getvContent());
+            videoReturnDTO.setCreate_time(DateUtils.format(videoEntity.getCreateDate(), DateUtils.FORMAT_LONG));
+            videoReturnDTO.setVideo_uri(videoEntity.getvUrl());
+
+            videoReturnDTOS.add(videoReturnDTO);
+        });
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute("videos", videoReturnDTOS);
+        return new SuccessApiResult(modelMap);
+    }
+
+    @Override
+    public List<VideoReturnDTO> getVideoList(WebPage webPage, UserPropertyStaffEntity userPropertystaff) {
+        List<VideoEntity> videoEntities = videoRepository.getVideosByParam(webPage);
+        List<VideoReturnDTO> videoReturnDTOS = new ArrayList<>();
+        videoEntities.forEach(videoEntity -> {
+            VideoReturnDTO videoReturnDTO = new VideoReturnDTO();
+            videoReturnDTO.setId(videoEntity.getvId());
+            videoReturnDTO.setProfile_image(videoEntity.getAvatarUrl());
+            videoReturnDTO.setName(videoEntity.getCreateName());
+            videoReturnDTO.setText(videoEntity.getvContent());
+            videoReturnDTO.setCreate_time(DateUtils.format(videoEntity.getCreateDate(), DateUtils.FORMAT_LONG));
+            videoReturnDTO.setVideo_uri(videoEntity.getvUrl());
+            videoReturnDTO.setStatus(videoEntity.getStatus());
+
+            videoReturnDTOS.add(videoReturnDTO);
+        });
+        return videoReturnDTOS;
+    }
+
+    @Override
+    public boolean toReleaseOrCancel(String videoId, String status, UserPropertyStaffEntity userPropertystaffEntity) {
+        VideoEntity videoEntity = videoRepository.getVideosByVideoId(videoId);
+        if (videoEntity != null) {
+            videoEntity.setStatus(Integer.parseInt(status));
+
+            videoRepository.update(videoEntity);
+            return true;
+        }
+        return false;
     }
 }

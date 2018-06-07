@@ -17,6 +17,8 @@ public class VideoEntity {
     private Date createDate;
     private String  avatarUrl;
     private String opentId;
+    private String userId;
+    private int status;//1发布 0 不可发布
     @Id
     @Column(name = "VIDEO_ID", length = 32)
     public String getvId() {
@@ -88,5 +90,23 @@ public class VideoEntity {
 
     public void setOpentId(String opentId) {
         this.opentId = opentId;
+    }
+    @Basic
+    @Column(name = "USER_ID", length = 64)
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    @Basic
+    @Column(name = "STATUS", length = 2)
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

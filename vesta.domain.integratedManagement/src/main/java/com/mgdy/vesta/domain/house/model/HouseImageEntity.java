@@ -33,7 +33,7 @@ public class HouseImageEntity {
         this.houseId = houseId;
     }
     @Basic
-    @Column(name = "IMAGE_URL", length = 200)
+    @Column(name = "IMAGE_URL", length = 500)
     public String getImgUrl() {
         return imgUrl;
     }

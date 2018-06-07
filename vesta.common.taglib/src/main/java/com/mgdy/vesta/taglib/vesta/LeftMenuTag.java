@@ -33,7 +33,7 @@ public class LeftMenuTag extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
 
-        String myBreadcrumb  = "";
+        String myBreadcrumb = "";
 
         StringBuilder outWrapStr = new StringBuilder();
         outWrapStr.append("<div class=' sidebar' role='navigation'>");
@@ -62,7 +62,7 @@ public class LeftMenuTag extends SimpleTagSupport {
         StringBuilder str5 = new StringBuilder();
         StringBuilder str6 = new StringBuilder();
 
-        for(Viewmodel tmpmodel:menulist) {
+        for (Viewmodel tmpmodel : menulist) {
 
             StringBuilder str = new StringBuilder();
 
@@ -74,9 +74,9 @@ public class LeftMenuTag extends SimpleTagSupport {
                 str = str3;
             } else if (tmpmodel.getBelong().equals("4")) {
                 str = str4;
-            } else if (tmpmodel.getBelong().equals("5")){
+            } else if (tmpmodel.getBelong().equals("5")) {
                 str = str5;
-            }else if(tmpmodel.getBelong().equals("6")){
+            } else if (tmpmodel.getBelong().equals("6")) {
                 str = str6;
             }
 //            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
@@ -114,12 +114,12 @@ public class LeftMenuTag extends SimpleTagSupport {
         }
 
 
-        firstStr.append(str1+"</ul></nav>");
-        twoStr.append(str2+"</ul></nav>");
-        threeStr.append(str3+"</ul></nav>");
-        fourStr.append(str4+"</ul></nav>");
-        fiveStr.append(str5+"</ul></nav>");
-        sixStr.append(str6+"</ul></nav>");
+        firstStr.append(str1 + "</ul></nav>");
+        twoStr.append(str2 + "</ul></nav>");
+        threeStr.append(str3 + "</ul></nav>");
+        fourStr.append(str4 + "</ul></nav>");
+        fiveStr.append(str5 + "</ul></nav>");
+        sixStr.append(str6 + "</ul></nav>");
 
         outWrapStr.append(firstStr).append(twoStr);
         outWrapStr.append(threeStr).append(fourStr);
@@ -164,8 +164,8 @@ public class LeftMenuTag extends SimpleTagSupport {
 
         outWrapStr.append("<div class='profile_details'>");
         outWrapStr.append("<ul><li>");
-        outWrapStr.append("<span>"+df.format(new Date())+"</span>");
-        outWrapStr.append("<span> 您好，"+username+"&nbsp;&nbsp;" +"</span>");
+        outWrapStr.append("<span>" + df.format(new Date()) + "</span>");
+        outWrapStr.append("<span> 您好，" + username + "&nbsp;&nbsp;" + "</span>");
         /* 新增密码修改功能_2016-09-27_Wyd */
 //        outWrapStr.append("<a href=\"javascript:;\" onClick=\"javascript:window.open('../staffUser/toEditStaffUserPassword','','width=610,height=240,left=673, top=195,toolbar=no, status=no, menubar=no, resizable=no, scrollbars=no');return false;\"><span> 修改密码</span></a>");
         /* ============================ */
@@ -188,9 +188,9 @@ public class LeftMenuTag extends SimpleTagSupport {
 
         outWrapStr.append("<h3 class='title1'>您现在的位置是：");
         //crunmenu = 對應的 viewmodel 表 中 menuid
-        if("0".equals(crunMenu)) {
-            outWrapStr.append( "<a href='#'>首页</a> ");
-        }else{
+        if ("0".equals(crunMenu)) {
+            outWrapStr.append("<a href='#'>首页</a> ");
+        } else {
             outWrapStr.append(myBreadcrumb);
         }
         outWrapStr.append("</h3>");
@@ -201,19 +201,28 @@ public class LeftMenuTag extends SimpleTagSupport {
 
     private String getLeftIcon(String menuId) {
         String leftIcon = "fa-star-o";
-        switch (menuId){
+        switch (menuId) {
             case "000100000000": //新闻资讯
-                leftIcon = "glyphicon glyphicon-cog";break;
+                leftIcon = "glyphicon glyphicon-cog";
+                break;
             case "000200000000"://菜单管理
-                leftIcon = "glyphicon glyphicon-folder-open";break;
+                leftIcon = "glyphicon glyphicon-folder-open";
+                break;
             case "000300000000": //留言评论
-                leftIcon = "glyphicon glyphicon-comment";break;
+                leftIcon = "glyphicon glyphicon-comment";
+                break;
             case "000400000000"://房间管理
-                leftIcon = "glyphicon glyphicon-home";break;
+                leftIcon = "glyphicon glyphicon-home";
+                break;
             case "000500000000": //景点管理
-                leftIcon = "glyphicon glyphicon-leaf";break;
+                leftIcon = "glyphicon glyphicon-leaf";
+                break;
             case "000600000000"://用户管理
-                leftIcon="glyphicon glyphicon-user";break;
+                leftIcon = "glyphicon glyphicon-user";
+                break;
+            case "000700000000"://视频管理
+                leftIcon = "glyphicon glyphicon-facetime-video";
+                break;
         }
 
 

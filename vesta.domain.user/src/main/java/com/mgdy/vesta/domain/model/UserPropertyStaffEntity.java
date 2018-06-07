@@ -29,7 +29,14 @@ public class UserPropertyStaffEntity {
     private String officePhone; //工作电话
     private Integer orderNum; //排序
     private String memo;      //备注
-
+    private String city;
+    private String province;
+    private String country;
+    private String language;
+    private String WC_nickName;//微信用户昵称
+    private String sourceType;//数据来源
+    private String openId;
+    private String sessionKey;
     @Id
     @Column(name = "STAFF_ID", nullable = false, length = 32)
     public String getStaffId() {
@@ -41,7 +48,7 @@ public class UserPropertyStaffEntity {
     }
 
     @Basic
-    @Column(name = "USERNAME", nullable = false, length = 50)
+    @Column(name = "USERNAME", length = 50)
     public String getUserName() {
         return userName;
     }
@@ -51,7 +58,7 @@ public class UserPropertyStaffEntity {
     }
 
     @Basic
-    @Column(name = "PASSWORD", nullable = false, length = 100)
+    @Column(name = "PASSWORD",  length = 100)
     public String getPassword() {
         return password;
     }
@@ -142,7 +149,7 @@ public class UserPropertyStaffEntity {
     }
 
     @Basic
-    @Column(name = "LOGO", length = 300)
+    @Column(name = "LOGO", length = 500)
     public String getLogo() {
         return logo;
     }
@@ -221,5 +228,76 @@ public class UserPropertyStaffEntity {
     public void setMemo(String memo) {
         this.memo = memo;
     }
+    @Basic
+    @Column(name = "WX_CITY", length = 50)
+    public String getCity() {
+        return city;
+    }
 
+    public void setCity(String city) {
+        this.city = city;
+    }
+    @Basic
+    @Column(name = "WX_PROVINCE", length = 50)
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+    @Basic
+    @Column(name = "WX_COUNTRY", length = 50)
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    @Basic
+    @Column(name = "WX_LANGUAGE", length = 50)
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+    @Basic
+    @Column(name = "WX_NICK_NAME", length = 50)
+    public String getWC_nickName() {
+        return WC_nickName;
+    }
+
+    public void setWC_nickName(String WC_nickName) {
+        this.WC_nickName = WC_nickName;
+    }
+    @Basic
+    @Column(name = "SOURCE_TYPE", length = 6)
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+    @Basic
+    @Column(name = "OPENT_ID", length = 50)
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+    @Basic
+    @Column(name = "SESSION_KEY", length = 50)
+    public String getSessionKey() {
+        return sessionKey;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
 }

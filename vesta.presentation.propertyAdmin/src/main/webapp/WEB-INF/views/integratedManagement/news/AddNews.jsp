@@ -91,14 +91,14 @@
                       enctype="multipart/form-data">
                     <%-- 新闻标题 --%>
                     <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label" for="newsTitle">新闻标题</label>
+                        <label class="col-sm-3 control-label" for="newsTitle">草原标题</label>
                         <div class="col-sm-5">
                             <input type="text" class="form-control" placeholder="" id="newsTitle" name="newsTitle">
                         </div>
                     </div>
                     <%-- 新闻展示图 --%>
                     <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label">新闻展示图</label>
+                        <label class="col-sm-3 control-label">草原展示图</label>
                         <div class="col-sm-5">
                             <input id="newsImgUpload" name="newsImgFile" type="file" multiple/>
                             <p style="color: red"><span>建议上传尺寸750×530</span></p>
@@ -107,7 +107,7 @@
                     </div>
                     <%-- 新闻来源 --%>
                     <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label" for="newsSource">新闻简介</label>
+                        <label class="col-sm-3 control-label" for="newsSource">草原简介</label>
                         <div class="col-sm-5">
                             <textarea class="form-control" id="newsSource" name="newsSource"></textarea>
                             <%--<input type="text" class="form-control" placeholder="" id="newsSource" name="newsSource">--%>
@@ -129,7 +129,7 @@
                     </div>
                     <%-- 新闻详情 --%>
                     <div class="form-group col-lg-7">
-                        <label class="col-sm-3 control-label">新闻详情</label>
+                        <label class="col-sm-3 control-label">草原详情</label>
                         <div class="col-sm-9">
                             <script id="editor" type="text/plain"></script>
                             <input type="hidden" id="newsContent" name="newsContent"/>

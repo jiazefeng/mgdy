@@ -67,37 +67,37 @@
 </style>
 <script>
     $(function () {
-        $("#000100010000").addClass("active");
-        $("#000100010000").parent().parent().addClass("in");
-        $("#000100010000").parent().parent().parent().parent().addClass("active");
+        $("#000700010000").addClass("active");
+        $("#000700010000").parent().parent().addClass("in");
+        $("#000700010000").parent().parent().parent().parent().addClass("active");
     })
     new WOW().init();
 </script>
 <body class="cbp-spmenu-push">
 <div class="main-content">
     <vl:leftmenu sysTitle="Vesta Dashboard" menulist="<%=menulist%>" secanViewlist="<%=secanViewlist%>"
-                 crunMenu="000100010000" username="${propertystaff.staffName}"/>
+                 crunMenu="000700010000" username="${propertystaff.staffName}"/>
     <div class="forms">
         <div class="widget-shadow " data-example-id="basic-forms">
             <%--搜索条件开始--%>
-            <div class="form-body form_b">
-                <form id="form" class="form-horizontal" action="../news/getNewsList.html">
-                    <%-- 新闻标题搜索 --%>
-                    <div class="form-group  col-lg-12">
-                        <label for="newsTitle" class="col-sm-2 control-label">搜索</label>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" placeholder="" id="newsTitle" name="newsTitle"
-                                   value="${newsInfo.newsTitle}">
-                        </div>
-                        <div class="col-sm-5">
-                            <button type="submit" class="btn btn-primary" for="propertySearch"><spring:message
-                                    code="propertyCompany.propertySearch"/></button>
-                            <a href="../news/toAddNews.html" class="btn btn-primary">新增</a>
-                        </div>
+            <%--<div class="form-body form_b">--%>
+            <%--<form id="form" class="form-horizontal" action="../news/getNewsList.html">--%>
+            <%--&lt;%&ndash; 新闻标题搜索 &ndash;%&gt;--%>
+            <%--<div class="form-group  col-lg-12">--%>
+            <%--<label for="newsTitle" class="col-sm-2 control-label">新闻搜索</label>--%>
+            <%--<div class="col-sm-2">--%>
+            <%--<input type="text" class="form-control" placeholder="" id="newsTitle" name="newsTitle"--%>
+            <%--value="${newsInfo.newsTitle}">--%>
+            <%--</div>--%>
+            <%--<div class="col-sm-5">--%>
+            <%--<button type="submit" class="btn btn-primary" for="propertySearch"><spring:message--%>
+            <%--code="propertyCompany.propertySearch"/></button>--%>
+            <%--<a href="../news/toAddNews.html" class="btn btn-primary">新增</a>--%>
+            <%--</div>--%>
 
-                    </div>
-                </form>
-            </div>
+            <%--</div>--%>
+            <%--</form>--%>
+            <%--</div>--%>
             <%--搜索条件结束--%>
         </div>
     </div>
@@ -106,35 +106,31 @@
             <thead>
             <tr>
                 <td>序号</td>
-                <th>草原标题</th>
-                <th width="50%">草原简介</th>
-                <th>所在纬度</th>
-                <th>所在经度</th>
+                <th>标题</th>
                 <th>发布时间</th>
                 <th>发布人</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${newsInfoList}" var="news" varStatus="row">
+            <c:forEach items="${videoList}" var="video" varStatus="row">
                 <tr>
                     <td><b>${(webPage.pageIndex-1)*20+row.index + 1}</b></td>
-                    <td>${news.newsTitle}</td>
-                    <td>${news.newsSource}</td>
-                    <td>${news.latitude}</td>
-                    <td>${news.longitude}</td>
-                    <td>${news.createDate}</td>
-                    <td>${news.createName}</td>
+                    <td>${video.text}</td>
+                    <td>${video.create_time}</td>
+                    <td>${video.name}</td>
                     <td class="last">
-                        <a href="javascript:void(0);" onclick="toTop('${news.newsId}','${news.slideShow}')" id="toTop"
+                        <a href="javascript:void(0);" onclick="toEdit('${video.video_uri}')" id="toEdit"
+                           class="a3">查看</a>
+                        <a href="javascript:void(0);" onclick="toTop('${video.id}','${video.status}')" id="toTop"
                            class="a3">
-                            <c:if test="${news.slideShow eq '0'}">置顶
+                            <c:if test="${video.status == 0}">发布
                             </c:if>
-                            <c:if test="${news.slideShow eq '1'}">取消置顶
+                            <c:if test="${video.status == 1}">取消发布
                             </c:if></a>
-                        <a href="javascript:void(0);" onclick="toEdit('${news.newsId}')" id="toEdit" class="a3">编辑</a>
-                        <a href="javascript:void(0);" onclick="toDelete('${news.newsId}')" id="toDelete"
-                           class="a3">删除</a>
+
+                            <%--<a href="javascript:void(0);" onclick="toDelete('${news.newsId}')" id="toDelete"--%>
+                            <%--class="a3">删除</a>--%>
                     </td>
                 </tr>
             </c:forEach>
@@ -143,7 +139,7 @@
         <m:pager pageIndex="${webPage.pageIndex}"
                  pageSize="${webPage.pageSize}"
                  recordCount="${webPage.recordCount}"
-                 submitUrl="${pageContext.request.contextPath }/news/getNewsList.html?pageIndex={0}&newsTitle=${newsDTO.newsTitle}"/>
+                 submitUrl="${pageContext.request.contextPath }/video/getVideoList.html?pageIndex={0}"/>
     </div>
 
 </div>
@@ -151,6 +147,22 @@
 
 <!-- main content end-->
 <%@ include file="../../main/foolter.jsp" %>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <%--<div class="modal-header">--%>
+        <%--<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span--%>
+        <%--class="sr-only">Close</span></button>--%>
+        <%--</div>--%>
+        <div class="container" style="margin-top: 15px;">
+            <div style="margin-top: 20px; line-height: 2; text-align: left">
+                <video id="videoId" src=""
+                       controls="controls">没有相关视频
+                </video>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="../static/plus/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../static/js/bootstrap-datetimepicker.zh-CN.js"
@@ -199,36 +211,43 @@
 </script>
 <script>
     //新增与修改
-    function toEdit(id) {
-        window.location.href = "../news/toModifyNews.html?newsId=" + id;
+    function toEdit(videoUrl) {
+//        $("#myModalLabel2").html("编辑设备信息");
+        console.log(videoUrl)
+        document.getElementById("videoId").src = videoUrl;
+        $("#myModal").modal({
+            backdrop: true,
+            show: true
+        });
+//        window.location.href = "../news/toModifyNews.html?newsId=" + id;
     }
     //置顶
     function toTop(id, slideShow) {
         if (slideShow == '0') {
-            if (confirm("最多只能置顶4条新闻，确定要置顶此条新闻么？")) {
+            if (confirm("确定该视频合格？确定要发布该视频？")) {
                 $.ajax({
                     type: "GET",
-                    url: "../news/toTopNews?newsId=" + id + "&slideShow=" + slideShow,
+                    url: "../video/toReleaseOrCancel?videoId=" + id + "&status=1",
                     cache: false,
                     async: false,
                     dataType: "json",
                     success: function (data) {
                         if (data.error == 0) {
-                            alert("置顶成功！");
+                            alert("发布成功！");
                         } else {
-                            alert("置顶失败！最多只能置顶4条新闻");
+                            alert("发布失败！");
                         }
                     }
                 });
-                window.location.href = "../news/getNewsList.html";
+                window.location.href = "../video/getVideoList.html";
                 return;
             }
         }
         if (slideShow == '1') {
-            if (confirm("确定要取消置顶此条新闻么？")) {
+            if (confirm("确定要取消发布此视频？")) {
                 $.ajax({
                     type: "GET",
-                    url: "../news/cancelTopNews?newsId=" + id + "&slideShow=" + slideShow,
+                    url: "../video/toReleaseOrCancel?videoId=" + id + "&status=0",
                     cache: false,
                     async: false,
                     dataType: "json",
@@ -240,14 +259,8 @@
                         }
                     }
                 });
-                window.location.href = "../news/getNewsList.html";
+                window.location.href = "../video/getVideoList.html";
             }
-        }
-    }
-    //删除
-    function toDelete(id) {
-        if (confirm("确定要删除吗?")) {
-            window.location.href = "../news/deleteNews.html?newsId=" + id;
         }
     }
 </script>

@@ -184,7 +184,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public boolean topNews(NewsDTO newsDTO, UserPropertyStaffEntity userPropertystaffEntity) {
         NewsEntity newsEntity = newsRepository.getNewsInfoById(newsDTO.getNewsId());
-        String slideShow = "0";
+        String slideShow = "1";
         int count = newsRepository.getNewsCount(slideShow);
         if (count >= 5) {
             return false;

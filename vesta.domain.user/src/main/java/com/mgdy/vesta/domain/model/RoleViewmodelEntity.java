@@ -20,6 +20,7 @@ public class RoleViewmodelEntity {
     private String runscript;
     private String owner;
     private String belong;  //1会员 、 2质检 3待定
+    private int status;//1可用、2不可用
 
     @Id
     @Column(name = "MenuId" ,length = 50)
@@ -139,6 +140,16 @@ public class RoleViewmodelEntity {
 
     public void setBelong(String belong) {
         this.belong = belong;
+    }
+
+    @Basic
+    @Column(name = "STATUS",length = 2)
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override

@@ -10,6 +10,15 @@ public class VideoReturnDTO {
     private String create_time;
     private String text;
     private String video_uri;
+private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getId() {
         return id;

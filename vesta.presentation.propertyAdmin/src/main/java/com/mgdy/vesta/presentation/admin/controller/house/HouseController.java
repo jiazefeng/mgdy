@@ -5,6 +5,7 @@ import com.mgdy.vesta.application.house.inf.HouseService;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.taglib.page.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,8 @@ import java.util.List;
 public class HouseController {
     @Autowired
     private HouseService houseService;
-
+    @Value("${IMAGE_SERVER_URL}")
+    private String IMAGE_SERVER_URL;
     /**
      * 分页获取新闻列表
      *
@@ -64,7 +66,7 @@ public class HouseController {
                                         @RequestParam(value = "houseDetailImage", required = false) MultipartFile[] houseDetailImages,
                                         HouseDTO houseDTO,Model model, HttpServletRequest req) {
         String imgType = "houseImage";
-        houseService.saveHouseInfo(userPropertystaffEntity, homePageimgFile,houseDetailImages,houseDTO,req,imgType);
+        houseService.saveHouseInfo(userPropertystaffEntity, homePageimgFile,houseDetailImages,houseDTO,req,imgType,IMAGE_SERVER_URL);
         return new ModelAndView("redirect:../house/getHouseInfoList.html");
     }
     /**
@@ -85,7 +87,7 @@ public class HouseController {
                                       @RequestParam(value = "houseDetailImage", required = false) MultipartFile[] houseDetailImages,
                                       HouseDTO houseDTO,Model model, HttpServletRequest req) {
         String imgType = "houseImage";
-        houseService.updateHouseInfo(userPropertystaffEntity, homePageimgFile,houseDetailImages,houseDTO,req,imgType);
+        houseService.updateHouseInfo(userPropertystaffEntity, homePageimgFile,houseDetailImages,houseDTO,req,imgType,IMAGE_SERVER_URL);
         return new ModelAndView("redirect:../house/getHouseInfoList.html");
     }
     /**

@@ -20,12 +20,14 @@ import java.net.URL;
 public class WeixinUtil {
     private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);
     public static AccessToken accessToken = null;
+
     /**
      * 用户通过code换取网页授权access_token--授权时
+     *
      * @param code
      * @return
      */
-    public static ClientAccessToken authorizationUser(String code){
+    public static ClientAccessToken authorizationUser(String code) {
 //        https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
 //        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
         String get_access_token_url = "https://api.weixin.qq.com/sns/jscode2session?"
@@ -37,45 +39,88 @@ public class WeixinUtil {
         //String requestString = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code="+code+"&grant_type=authorization_code";
 
         get_access_token_url = get_access_token_url.replace("APPID", AppConfig.AppID);
-        get_access_token_url = get_access_token_url.replace("SECRET",AppConfig.AppSecret);
-        get_access_token_url = get_access_token_url.replace("CODE",code);
+        get_access_token_url = get_access_token_url.replace("SECRET", AppConfig.AppSecret);
+        get_access_token_url = get_access_token_url.replace("CODE", code);
 
-        System.out.println("---authorizationUser---get_access_token request----"+get_access_token_url);
+//        System.out.println("---authorizationUser---get_access_token request----" + get_access_token_url);
         String json = sendUrlRequest(get_access_token_url);
-        System.out.println("---authorizationUser---get_access_token response----"+json);
-        JSONObject jsonObject= JSONObject.fromObject(json);
+//        System.out.println("---authorizationUser---get_access_token response----" + json);
+        JSONObject jsonObject = JSONObject.fromObject(json);
 
-        if(json.indexOf("errcode")>-1){
+        if (json.indexOf("errcode") > -1) {
             return null;
         }
+        //{"session_key":"ia6C2JUwt67Jtt1edA+\/dg==","openid":"obsxY5PCYJUndyYjgJiZQriuTeQY"}
 
-
-        String access_token=jsonObject.getString("access_token");
-        String openid=jsonObject.getString("openid");
-        String unionid = jsonObject.getString("unionid");
-        ClientAccessToken clientAccessToken =  new ClientAccessToken();
-        clientAccessToken.setAccesstoken(access_token);
+        String session_key = jsonObject.getString("session_key");
+        String openid = jsonObject.getString("openid");
+//        String unionid = jsonObject.getString("unionid");
+        ClientAccessToken clientAccessToken = new ClientAccessToken();
+        clientAccessToken.setAccesstoken(session_key);
         clientAccessToken.setOpenid(openid);
-        clientAccessToken.setUnionid(unionid);  //微信公众号 和 移动应用统一 编码
+//        clientAccessToken.setUnionid(unionid);  //微信公众号 和 移动应用统一 编码
         return clientAccessToken;
     }
 
-
+    /**
+     * 获取微信小程序用户信息
+     *
+     * @param clientAccessToken
+     * @param encryptedData
+     * @param iv
+     * @return
+     */
+    public static WeChatUser getWeChatUser(ClientAccessToken clientAccessToken, String encryptedData, String iv) {
+// 被加密的数据
+//        byte[] dataByte = Base64.decode(encryptedData);
+//        // 加密秘钥
+//        byte[] keyByte = Base64.decode(clientAccessToken.getAccesstoken());
+//        // 偏移量
+//        byte[] ivByte = Base64.decode(iv);
+//        try {
+//            // 如果密钥不足16位，那么就补足.  这个if 中的内容很重要
+//            int base = 16;
+//            if (keyByte.length % base != 0) {
+//                int groups = keyByte.length / base + (keyByte.length % base != 0 ? 1 : 0);
+//                byte[] temp = new byte[groups * base];
+//                Arrays.fill(temp, (byte) 0);
+//                System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
+//                keyByte = temp;
+//            }
+//            // 初始化
+//            Security.addProvider(new BouncyCastleProvider());
+//            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+//            SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
+//            AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
+//            parameters.init(new IvParameterSpec(ivByte));
+//            cipher.init(Cipher.DECRYPT_MODE, spec, parameters);// 初始化
+//            byte[] resultByte = cipher.doFinal(dataByte);
+//            if (null != resultByte && resultByte.length > 0) {
+//                String result = new String(resultByte, "UTF-8");
+//                JSONObject jsonObject = JSONObject.fromObject(result);
+//                System.out.println(jsonObject);
+////                return JSONObject.fromObject(result);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        return null;
+    }
 
 
     //拉取用户信息
-    public static WeChatUser getWeChatUser(ClientAccessToken clientAccessToken){
+    public static WeChatUser getWeChatUser(ClientAccessToken clientAccessToken) {
         String openid = clientAccessToken.getOpenid();
         String accessToken = clientAccessToken.getAccesstoken();
         String get_userinfo = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
-        get_userinfo = get_userinfo.replace("ACCESS_TOKEN",accessToken);
-        get_userinfo = get_userinfo.replace("OPENID",openid);
+        get_userinfo = get_userinfo.replace("ACCESS_TOKEN", accessToken);
+        get_userinfo = get_userinfo.replace("OPENID", openid);
 
         String userInfoJson = sendUrlRequest(get_userinfo);
 
         JSONObject userInfoJO = JSONObject.fromObject(userInfoJson);
 
-        WeChatUser user =  new WeChatUser();
+        WeChatUser user = new WeChatUser();
         user.setUser_openid(userInfoJO.getString("openid"));
         user.setUser_nickname(userInfoJO.getString("nickname"));
         user.setUser_sex(userInfoJO.getString("sex"));
@@ -91,28 +136,29 @@ public class WeixinUtil {
     /**
      * 商户
      * 获取最新access token  ----刷新token
+     *
      * @param appid
      * @param appsecret
      * @return
      */
-    public static AccessToken getAccessToken(String appid,String appsecret) {
+    public static AccessToken getAccessToken(String appid, String appsecret) {
 
         String get_access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 
-        get_access_token_url = get_access_token_url.replace("APPID",appid);
-        get_access_token_url = get_access_token_url.replace("APPSECRET",appsecret);
+        get_access_token_url = get_access_token_url.replace("APPID", appid);
+        get_access_token_url = get_access_token_url.replace("APPSECRET", appsecret);
         System.out.println("---getAccessToken----get_access_token request----" + get_access_token_url);
         String json = sendUrlRequest(get_access_token_url);
         System.out.println("---getAccessToken----get_access_token response----" + json);
-        JSONObject jsonObject= JSONObject.fromObject(json);
-        String access_token=jsonObject.getString("access_token");
-        String expires_in_add=jsonObject.getString("expires_in");
-        AccessToken accessToken = new  AccessToken();
+        JSONObject jsonObject = JSONObject.fromObject(json);
+        String access_token = jsonObject.getString("access_token");
+        String expires_in_add = jsonObject.getString("expires_in");
+        AccessToken accessToken = new AccessToken();
         accessToken.setToken(access_token);
 
         Long expires_in = System.currentTimeMillis();
         //微信返回的是秒
-        expires_in = expires_in + Long.parseLong(expires_in_add)*1000;
+        expires_in = expires_in + Long.parseLong(expires_in_add) * 1000;
 
         System.out.println("-------公众号 access next expires time-----" + expires_in);
         accessToken.setExpiresIn(expires_in);
@@ -120,37 +166,34 @@ public class WeixinUtil {
     }
 
 
-
-    public static String sendUrlRequest(String urlStr){
+    public static String sendUrlRequest(String urlStr) {
         String tempStr = "";
-        HttpURLConnection url_con=null;
-        try{
-            URL url=new URL(urlStr);
-            StringBuffer bankXmlBuffer=new StringBuffer();
+        HttpURLConnection url_con = null;
+        try {
+            URL url = new URL(urlStr);
+            StringBuffer bankXmlBuffer = new StringBuffer();
             //创建URL连接，提交到数据，获取返回结果
-            HttpURLConnection connection=(HttpURLConnection)url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setDoOutput(true);
 //            connection.setRequestProperty("User-Agent", "directclient");
-            PrintWriter out=new PrintWriter(new OutputStreamWriter(connection.getOutputStream(),"UTF-8"));
+            PrintWriter out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
 //            out.println(param);
             out.close();
-            BufferedReader in=new BufferedReader(new InputStreamReader(connection
-                    .getInputStream(),"UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection
+                    .getInputStream(), "UTF-8"));
             String inputLine;
-            while((inputLine=in.readLine())!=null){
+            while ((inputLine = in.readLine()) != null) {
                 bankXmlBuffer.append(inputLine);
             }
             in.close();
-            tempStr=bankXmlBuffer.toString();
-            System.out.println(" url 返回："+tempStr);
-        }
-        catch(Exception e)
-        {
-            System.out.println("发送GET请求出现异常！"+e);
+            tempStr = bankXmlBuffer.toString();
+//            System.out.println(" url 返回：" + tempStr);
+        } catch (Exception e) {
+            System.out.println("发送GET请求出现异常！" + e);
             e.printStackTrace();
-        }finally{
-            if(url_con!=null)
+        } finally {
+            if (url_con != null)
                 url_con.disconnect();
         }
         return tempStr;
@@ -166,75 +209,75 @@ public class WeixinUtil {
          * 灵活获取access token
          */
 
-        if(accessToken==null ||accessToken.getToken()==null){
-            accessToken = getAccessToken(AppConfig.AppID,AppConfig.AppSecret);
+        if (accessToken == null || accessToken.getToken() == null) {
+            accessToken = getAccessToken(AppConfig.AppID, AppConfig.AppSecret);
 
             System.out.println("--null-accessToken  getExpiresIn ---" + accessToken.getExpiresIn());
 
             long checkTimes = System.currentTimeMillis();
             System.out.println("---System.currentTimeMillis ----" + checkTimes);
-            System.out.println("----time to out ----" );
-            System.out.println(accessToken.getExpiresIn()- System.currentTimeMillis());
-            System.out.println("----time to out ----" );
-        }else{
+            System.out.println("----time to out ----");
+            System.out.println(accessToken.getExpiresIn() - System.currentTimeMillis());
+            System.out.println("----time to out ----");
+        } else {
             //判断当前的Accesstoken是否已经失效---失效前两分钟 重新获取
 
             System.out.println("-not null--accessToken  getExpiresIn ---" + accessToken.getExpiresIn());
 
             long checkTimes = System.currentTimeMillis();
             System.out.println("---System.currentTimeMillis ----" + checkTimes);
-            System.out.println("----time to out ----" );
-            System.out.println(accessToken.getExpiresIn()- System.currentTimeMillis());
-            System.out.println("----time to out ----" );
-            if(accessToken.getExpiresIn()- System.currentTimeMillis()<120000){
-                accessToken = getAccessToken(AppConfig.AppID,AppConfig.AppSecret);
+            System.out.println("----time to out ----");
+            System.out.println(accessToken.getExpiresIn() - System.currentTimeMillis());
+            System.out.println("----time to out ----");
+            if (accessToken.getExpiresIn() - System.currentTimeMillis() < 120000) {
+                accessToken = getAccessToken(AppConfig.AppID, AppConfig.AppSecret);
             }
         }
 
         //刷新accesstoken
 
-        String get_getticket_url = get_getticket_url_static.replace("ACCESS_TOKEN",accessToken.getToken());
+        String get_getticket_url = get_getticket_url_static.replace("ACCESS_TOKEN", accessToken.getToken());
 
         System.out.println("---get_getticket_url request token----" + accessToken.getToken());
         String json = sendUrlRequest(get_getticket_url);
         System.out.println("---get_getticket_url response----" + json);
-        JSONObject jsonObject= JSONObject.fromObject(json);
+        JSONObject jsonObject = JSONObject.fromObject(json);
 
         //再次判断是否获取成功  若失败重新获取
         String errcode = jsonObject.getString("errcode");
         System.out.println("---errcode----" + errcode);
-        if("0"!=errcode){
+        if ("0" != errcode) {
             accessToken = getAccessToken(AppConfig.AppID, AppConfig.AppSecret);
             get_getticket_url = get_getticket_url_static.replace("ACCESS_TOKEN", accessToken.getToken());
 
             System.out.println("---get_getticket_url request token----" + accessToken.getToken());
             json = sendUrlRequest(get_getticket_url);
             System.out.println("---scend  get_getticket_url response----" + json);
-            jsonObject= JSONObject.fromObject(json);
+            jsonObject = JSONObject.fromObject(json);
         }
 
 
-        String jsapi_ticket=jsonObject.getString("ticket");
-        String expires_in=jsonObject.getString("expires_in");
+        String jsapi_ticket = jsonObject.getString("ticket");
+        String expires_in = jsonObject.getString("expires_in");
 
         //------------------------
 
         String timestamp = Long.toString(System.currentTimeMillis());
         //
-        timestamp = timestamp.substring(0,timestamp.length()-3);
+        timestamp = timestamp.substring(0, timestamp.length() - 3);
         String noncestr = AppConfig.noncestr;
         //string1
         String string1 = "jsapi_ticket=JSAPI_TICKET&noncestr=NONCESTR&timestamp=TIMESTAMP&url=URL";
-        string1 = string1.replace("JSAPI_TICKET",jsapi_ticket);
-        string1 = string1.replace("NONCESTR",noncestr);
-        string1 = string1.replace("TIMESTAMP",timestamp);
-        string1 = string1.replace("URL",url);
+        string1 = string1.replace("JSAPI_TICKET", jsapi_ticket);
+        string1 = string1.replace("NONCESTR", noncestr);
+        string1 = string1.replace("TIMESTAMP", timestamp);
+        string1 = string1.replace("URL", url);
 
         System.out.println(string1);
 //        jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg&noncestr=Wm3WZYTPz0wzccnW
 //                &timestamp=1414587457&url=http://mp.weixin.qq.com?params=value
 
-        String signature= DigestUtils.shaHex(string1);
+        String signature = DigestUtils.shaHex(string1);
 
         reWeChatInfo.setAppId(AppConfig.AppID);
         reWeChatInfo.setNonceStr(noncestr);
@@ -252,24 +295,24 @@ public class WeixinUtil {
 
         //String requestString = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code="+code+"&grant_type=authorization_code";
 
-        get_access_token_url = get_access_token_url.replace("APPID",AppConfig.AppID_APP);
-        get_access_token_url = get_access_token_url.replace("SECRET",AppConfig.AppSecrt_APP);
-        get_access_token_url = get_access_token_url.replace("CODE",code);
+        get_access_token_url = get_access_token_url.replace("APPID", AppConfig.AppID_APP);
+        get_access_token_url = get_access_token_url.replace("SECRET", AppConfig.AppSecrt_APP);
+        get_access_token_url = get_access_token_url.replace("CODE", code);
 
-        System.out.println("---authorizationUser---get_access_token request----"+get_access_token_url);
+        System.out.println("---authorizationUser---get_access_token request----" + get_access_token_url);
         String json = sendUrlRequest(get_access_token_url);
-        System.out.println("---authorizationUser---get_access_token response----"+json);
-        JSONObject jsonObject= JSONObject.fromObject(json);
+        System.out.println("---authorizationUser---get_access_token response----" + json);
+        JSONObject jsonObject = JSONObject.fromObject(json);
 
-        if(json.indexOf("errcode")>-1){
+        if (json.indexOf("errcode") > -1) {
             return null;
         }
 
 
-        String access_token=jsonObject.getString("access_token");
-        String openid=jsonObject.getString("openid");
+        String access_token = jsonObject.getString("access_token");
+        String openid = jsonObject.getString("openid");
         String unionid = jsonObject.getString("unionid");
-        ClientAccessToken clientAccessToken =  new ClientAccessToken();
+        ClientAccessToken clientAccessToken = new ClientAccessToken();
         clientAccessToken.setAccesstoken(access_token);
         clientAccessToken.setOpenid(openid);
         clientAccessToken.setUnionid(unionid);  //微信公众号 和 移动应用统一 编码
@@ -279,19 +322,16 @@ public class WeixinUtil {
     /**
      * 发送https请求
      *
-     * @param requestUrl
-     *            请求地址
-     * @param requestMethod
-     *            请求方式（GET、POST）
-     * @param outputStr
-     *            提交的数据
+     * @param requestUrl    请求地址
+     * @param requestMethod 请求方式（GET、POST）
+     * @param outputStr     提交的数据
      * @return JSONObject(通过JSONObject.get(key)的方式获取json对象的属性值)
      */
     public static JSONObject httpsRequest(String requestUrl, String requestMethod, String outputStr) {
         JSONObject jsonObject = null;
         try {
             // 创建SSLContext对象，并使用我们指定的信任管理器初始化
-            TrustManager[] tm = { new MyX509TrustManager() };
+            TrustManager[] tm = {new MyX509TrustManager()};
             SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
             sslContext.init(null, tm, new java.security.SecureRandom());
             // 从上述SSLContext对象中得到SSLSocketFactory对象
@@ -334,13 +374,12 @@ public class WeixinUtil {
         }
         return jsonObject;
     }
+
     /**
      * 获取用户信息
      *
-     * @param accessToken
-     *            接口访问凭证
-     * @param openId
-     *            用户标识
+     * @param accessToken 接口访问凭证
+     * @param openId      用户标识
      * @return WeixinUserInfo
      */
     public static WeixinUserInfo getUserInfo(String accessToken, String openId) {

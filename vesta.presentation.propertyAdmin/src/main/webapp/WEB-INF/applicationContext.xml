@@ -34,13 +34,13 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass"><value>com.mysql.jdbc.Driver</value></property>
-        <!--<property name="jdbcUrl"><value>jdbc:mysql://172.16.124.79:3306/vesta?characterEncoding=utf8</value></property>-->
-        <!--<property name="user" ><value>root</value></property>-->
-        <!--<property name="password" ><value>mysql</value></property>-->
-        <!--<property name="jdbcUrl"><value>jdbc:mysql://211.83.242.116:3306/mongolia?characterEncoding=utf8</value></property>-->
-        <property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/mongolia?characterEncoding=utf8</value></property>
+        <property name="jdbcUrl"><value>jdbc:mysql://jiazefeng.mysql.rds.aliyuncs.com:3306/mongolia?characterEncoding=utf8</value></property>
         <property name="user" ><value>root</value></property>
-        <property name="password" ><value>123456</value></property>
+        <property name="password" ><value>JZF@zhn#03091127</value></property>
+        <!--<property name="jdbcUrl"><value>jdbc:mysql://211.83.242.116:3306/mongolia?characterEncoding=utf8</value></property>-->
+        <!--<property name="jdbcUrl"><value>jdbc:mysql://localhost:3306/mongolia?characterEncoding=utf8</value></property>-->
+        <!--<property name="user" ><value>root</value></property>-->
+        <!--<property name="password" ><value>123456</value></property>-->
         <property name="minPoolSize" value="5" />
         <property name="maxPoolSize" value="5" />
         <property name="maxStatements" value="10" />

@@ -7,6 +7,7 @@ import com.mgdy.vesta.application.viewSpot.inf.ViewSpotService;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.taglib.page.WebPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,8 @@ import java.util.List;
 public class ViewSpotController {
     @Autowired
     private ViewSpotService viewSpotService;
-
+    @Value("${IMAGE_SERVER_URL}")
+    private String IMAGE_SERVER_URL;
     /**
      * 分页获取景点列表
      *
@@ -37,7 +39,7 @@ public class ViewSpotController {
      * @return
      */
     @RequestMapping(value = "/getViewSpotInfoList.html", method = RequestMethod.GET)
-    public String getNewsList(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaff, @Valid ViewSpotDTO viewSpiotDTO, Model model, WebPage webPage) {
+    public String getViewSpotInfoList(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaff, @Valid ViewSpotDTO viewSpiotDTO, Model model, WebPage webPage) {
 
         List<ViewSpotDTO> viewSpotDTOList = viewSpotService.getViewSpotDTOInfoList(viewSpiotDTO, webPage, userPropertystaff);
         model.addAttribute("viewSpotInfoList", viewSpotDTOList);
@@ -60,18 +62,18 @@ public class ViewSpotController {
      * 保存景点信息
      */
     @RequestMapping(value = "/saveViewSpotInfo", method = RequestMethod.POST)
-    public ModelAndView saveHouseInfo(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity,
+    public ModelAndView saveViewSpotInfo(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity,
                                         @RequestParam(value = "viewSpotImgFile", required = false) MultipartFile viewSpotImgFile,
                                         ViewSpotDTO viewSpotDTO,Model model, HttpServletRequest req) {
         String imgType = "houseImage";
-        viewSpotService.saveViewSpotInfo(userPropertystaffEntity, viewSpotImgFile,viewSpotDTO,req,imgType);
+        viewSpotService.saveViewSpotInfo(userPropertystaffEntity, viewSpotImgFile,viewSpotDTO,req,imgType,IMAGE_SERVER_URL);
         return new ModelAndView("redirect:../viewSpot/getViewSpotInfoList.html");
     }
     /**
      * 跳转到编辑页面
      */
     @RequestMapping(value = "/toModifyViewSpot.html")
-    public String toModifyNews(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity, Model model, @RequestParam String viewSpotId) {
+    public String toModifyViewSpot(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity, Model model, @RequestParam String viewSpotId) {
         ViewSpotDTO viewSpotDTO = viewSpotService.getViewSpotInfoById(viewSpotId);
         model.addAttribute("viewSpotInfo", viewSpotDTO);
         return "/integratedManagement/viewSpot/UpdateViewSpotInfo";
@@ -80,18 +82,18 @@ public class ViewSpotController {
      * 保存编辑景点信息
      */
     @RequestMapping(value = "/updateViewSpotInfo", method = RequestMethod.POST)
-    public ModelAndView updateHouseInfo(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity,
+    public ModelAndView updateViewSpotInfo(@ModelAttribute("propertystaff") UserPropertyStaffEntity userPropertystaffEntity,
                                       @RequestParam(value = "viewSpotImgFile", required = false) MultipartFile viewSpotImgFile,
                                       ViewSpotDTO viewSpotDTO,Model model, HttpServletRequest req) {
         String imgType = "houseImage";
-        viewSpotService.updateViewSpotInfo(userPropertystaffEntity, viewSpotImgFile,viewSpotDTO,req,imgType);
+        viewSpotService.updateViewSpotInfo(userPropertystaffEntity, viewSpotImgFile,viewSpotDTO,req,imgType,IMAGE_SERVER_URL);
         return new ModelAndView("redirect:../viewSpot/getViewSpotInfoList.html");
     }
     /**
      * 删除景点信息
      */
     @RequestMapping(value = "/deleteViewSpotInfo.html")
-    public String deleteHouseInfo(Model model, @RequestParam String viewSoptId) {
+    public String deleteViewSpotInfo(Model model, @RequestParam String viewSoptId) {
         viewSpotService.deleteViewSpotInfo(viewSoptId);
         return "redirect:../viewSpot/getViewSpotInfoList.html";
     }

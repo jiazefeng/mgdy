@@ -8,6 +8,7 @@ import com.mgdy.vesta.domain.repository.UserPropertyStaffRepository;
 import com.mgdy.vesta.hibernate.HibernateDaoImpl;
 import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.StringUtil;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -62,12 +63,13 @@ public class UserPropertyStaffRepositoryImpl extends HibernateDaoImpl implements
         if (userid == null || "".equals(userid.trim())) {
             return null;
         }
-        String hql = "FROM RoleViewmodelEntity WHERE menulevel=:menulevel and owner =:owner  order by menuId,menuorder";
+        String hql = "FROM RoleViewmodelEntity WHERE menulevel=:menulevel and owner =:owner and status=:status order by menuId,menuorder";
 
         Query query = getCurrentSession().createQuery(hql);
 
         query.setParameter("menulevel", "1");
         query.setParameter("owner", property);
+        query.setParameter("status", 1);
         List<RoleViewmodelEntity> viewmodels = query.list();
         if (viewmodels == null || viewmodels.size() <= 0) {
             return null;
@@ -81,11 +83,12 @@ public class UserPropertyStaffRepositoryImpl extends HibernateDaoImpl implements
         if (userid == null || "".equals(userid.trim())) {
             return null;
         }
-        String hql = "FROM RoleViewmodelEntity WHERE menulevel<>:menulevel and owner =:owner  order by menuId,menuorder";
+        String hql = "FROM RoleViewmodelEntity WHERE menulevel<>:menulevel and owner =:owner and status=:status order by menuId,menuorder";
 
         Query query = getCurrentSession().createQuery(hql);
         query.setParameter("menulevel", "1");
         query.setParameter("owner", property);
+        query.setParameter("status", 1);
         List<RoleViewmodelEntity> viewmodels = query.list();
         if (viewmodels == null || viewmodels.size() <= 0) {
             return null;
@@ -103,6 +106,8 @@ public class UserPropertyStaffRepositoryImpl extends HibernateDaoImpl implements
         } else {
             hql.append(" where r.menulevel = '1'");
         }
+            hql.append(" where r.status = 1 ");
+
         hql.append(" ORDER BY r.menuorder");
         if (webPage != null) {
             return this.findByPage(hql.toString(), webPage, params);
@@ -919,6 +924,13 @@ public class UserPropertyStaffRepositoryImpl extends HibernateDaoImpl implements
         Query query = getCurrentSession().createQuery(hql);
         query.setMaxResults(12);
         return query.list();
+    }
+
+    @Override
+    public UserPropertyStaffEntity GetUserByOpenId(String wc, String openid) {
+        String sql = "from UserPropertyStaffEntity u where u.sourceType='" + wc + "' and u.openId='" + openid + "'";
+        UserPropertyStaffEntity userPropertyStaffEntity = (UserPropertyStaffEntity) getCurrentSession().createQuery(sql).uniqueResult();
+        return userPropertyStaffEntity;
     }
 
 }

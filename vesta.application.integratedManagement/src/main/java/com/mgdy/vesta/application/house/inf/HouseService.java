@@ -25,13 +25,13 @@ public interface HouseService {
 
     /**
      * 保存房屋信息
-     *
-     * @param userPropertystaffEntity
+     *  @param userPropertystaffEntity
      * @param homePageimgFile
      * @param houseDetailImages
      * @param houseDTO
+     * @param IMAGE_SERVER_URL
      */
-    void saveHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType);
+    void saveHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 按ID获取信息
@@ -43,15 +43,15 @@ public interface HouseService {
 
     /**
      * 修改房屋信息
-     *
-     * @param userPropertystaffEntity
+     *  @param userPropertystaffEntity
      * @param homePageimgFile
      * @param houseDetailImages
      * @param houseDTO
      * @param req
      * @param imgType
+     * @param IMAGE_SERVER_URL
      */
-    void updateHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType);
+    void updateHouseInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile homePageimgFile, MultipartFile[] houseDetailImages, HouseDTO houseDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 删除房屋信息

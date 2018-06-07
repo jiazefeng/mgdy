@@ -1,6 +1,5 @@
 package com.mgdy.vesta.application.viewSpot.impl;
 
-import com.mgdy.vesta.application.house.DTO.HouseDTO;
 import com.mgdy.vesta.application.house.DTO.HouseWebDTO;
 import com.mgdy.vesta.application.viewSpot.DTO.ViewSpotDTO;
 import com.mgdy.vesta.application.viewSpot.inf.ViewSpotService;
@@ -14,7 +13,7 @@ import com.mgdy.vesta.domain.viewSpot.model.ViewSpotEntity;
 import com.mgdy.vesta.domain.viewSpot.repository.ViewSpotRepository;
 import com.mgdy.vesta.taglib.page.WebPage;
 import com.mgdy.vesta.utility.IdGen;
-import com.mgdy.vesta.utility.ImgUpdate.FileUpload;
+import com.mgdy.vesta.utility.UploadFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -60,15 +59,16 @@ public class ViewSpotServiceImpl implements ViewSpotService {
     }
 
     @Override
-    public void saveViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType) {
+    public void saveViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
         if (viewSpotDTO != null) {
             ViewSpotEntity viewSpotEntity = new ViewSpotEntity();
             viewSpotEntity.setViewSpotId(IdGen.uuid());
             viewSpotEntity.setViewSpotTitle(viewSpotDTO.getViewSpotTitle());
             viewSpotEntity.setViewSpotDescribe(viewSpotDTO.getViewSpotDescribe());
             if (!viewSpotImgFile.isEmpty()) {
-                String imgUrl = FileUpload.upload(req, viewSpotImgFile, imgType);
-                viewSpotEntity.setViewSpotImageUrl(imgUrl);
+//                String imgUrl = FileUpload.upload(req, viewSpotImgFile, imgType);
+                String newsImgUrl = UploadFile.imgUpload(viewSpotImgFile, IMAGE_SERVER_URL);
+                viewSpotEntity.setViewSpotImageUrl(newsImgUrl);
             }
             viewSpotEntity.setClassify(viewSpotDTO.getClassify());
             viewSpotEntity.setCreateOn(new Date());
@@ -95,15 +95,16 @@ public class ViewSpotServiceImpl implements ViewSpotService {
     }
 
     @Override
-    public void updateViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType) {
+    public void updateViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL) {
         ViewSpotEntity viewSpotEntity = viewSpotRepository.getViewSpotInfoById(viewSpotDTO.getViewSpotId());
         if (viewSpotEntity != null) {
             viewSpotEntity.setClassify(viewSpotDTO.getClassify());
             viewSpotEntity.setViewSpotTitle(viewSpotDTO.getViewSpotTitle());
             viewSpotEntity.setViewSpotDescribe(viewSpotDTO.getViewSpotDescribe());
             if (!viewSpotImgFile.isEmpty()) {
-                String imgUrl = FileUpload.upload(req, viewSpotImgFile, imgType);
-                viewSpotEntity.setViewSpotImageUrl(imgUrl);
+//                String imgUrl = FileUpload.upload(req, viewSpotImgFile, imgType);
+                String newsImgUrl = UploadFile.imgUpload(viewSpotImgFile, IMAGE_SERVER_URL);
+                viewSpotEntity.setViewSpotImageUrl(newsImgUrl);
             }
             viewSpotEntity.setModifyBy(userPropertystaffEntity.getStaffName());
             viewSpotEntity.setModifyOn(new Date());

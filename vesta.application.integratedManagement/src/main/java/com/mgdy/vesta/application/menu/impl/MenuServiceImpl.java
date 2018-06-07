@@ -65,6 +65,7 @@ public class MenuServiceImpl implements MenuService {
         newMenu.setParantmenuid("");
         newMenu.setRunscript("#");
         newMenu.setOwner("property");
+        newMenu.setStatus(1);
         userPropertyStaffRepository.addViewModel(newMenu);
     }
 
@@ -98,6 +99,7 @@ public class MenuServiceImpl implements MenuService {
         newMenu.setParantmenuid(roleMenuDTO.getRoleMenuParId());
         newMenu.setRunscript("#");
         newMenu.setOwner("property");
+        newMenu.setStatus(1);
         userPropertyStaffRepository.addViewModel(newMenu);
     }
 

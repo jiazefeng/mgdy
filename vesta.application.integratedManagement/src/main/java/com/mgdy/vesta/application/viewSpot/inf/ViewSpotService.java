@@ -1,6 +1,5 @@
 package com.mgdy.vesta.application.viewSpot.inf;
 
-import com.mgdy.vesta.application.house.DTO.HouseDTO;
 import com.mgdy.vesta.application.viewSpot.DTO.ViewSpotDTO;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
@@ -26,14 +25,14 @@ public interface ViewSpotService {
 
     /**
      * 保存景点信息
-     *
-     * @param userPropertystaffEntity
+     *  @param userPropertystaffEntity
      * @param viewSpotImgFile
      * @param viewSpotDTO
      * @param req
      * @param imgType
+     * @param IMAGE_SERVER_URL
      */
-    void saveViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType);
+    void saveViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 获取对应的信息
@@ -45,14 +44,14 @@ public interface ViewSpotService {
 
     /**
      * 编辑景点信息
-     *
-     * @param userPropertystaffEntity
+     *  @param userPropertystaffEntity
      * @param viewSpotImgFile
      * @param viewSpotDTO
      * @param req
      * @param imgType
+     * @param IMAGE_SERVER_URL
      */
-    void updateViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType);
+    void updateViewSpotInfo(UserPropertyStaffEntity userPropertystaffEntity, MultipartFile viewSpotImgFile, ViewSpotDTO viewSpotDTO, HttpServletRequest req, String imgType, String IMAGE_SERVER_URL);
 
     /**
      * 删除景点信息

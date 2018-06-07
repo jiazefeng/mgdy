@@ -64,7 +64,7 @@ public class HouseEntity {
         this.groupBuyingPrice = groupBuyingPrice;
     }
     @Basic
-    @Column(name = "HOUSE_IMAGE", length = 200)
+    @Column(name = "HOUSE_IMAGE", length = 500)
     public String getHouseImge() {
         return houseImge;
     }
@@ -77,7 +77,7 @@ public class HouseEntity {
         return houseDescribe;
     }
     @Basic
-    @Column(name = "HOUSE_DESCRIBE", length = 2000)
+    @Column(name = "HOUSE_DESCRIBE", length = 10000)
     public void setHouseDescribe(String houseDescribe) {
         this.houseDescribe = houseDescribe;
     }

@@ -1,4 +1,4 @@
-package com.mgdy.vesta.presentation.admin.controller.news;
+package com.mgdy.vesta.presentation.admin.controller.weixin;
 
 import com.mgdy.vesta.application.DTO.WechatDTO;
 import com.mgdy.vesta.application.house.inf.HouseService;
@@ -11,16 +11,11 @@ import com.mgdy.vesta.application.video.inf.VideoService;
 import com.mgdy.vesta.application.viewSpot.inf.ViewSpotService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.common.restHTTPResult.ErrorApiResult;
-import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
-import com.mgdy.vesta.domain.model.UserTokenEntity;
-import org.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -29,14 +24,10 @@ import javax.validation.Valid;
  * Created by Jason on 2017/7/5.
  */
 @RestController
-@RequestMapping(value = "webNews")
-public class NewsWebController {
+@RequestMapping(value = "weixinapi")
+public class WeixinAPIController {
     @Autowired
     private NewsService newsService;
-    @Autowired
-    private MessageCommentService messageCommentService;
-    @Autowired
-    private HouseService houseService;
     @Autowired
     private ViewSpotService viewSpotService;
     @Autowired
@@ -52,7 +43,7 @@ public class NewsWebController {
      *
      * @return
      */
-    @RequestMapping(value = "/getWebNewsList", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = "/getNewsList", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public ApiResult getWebNewsList() {
         return newsService.getWebNewsList();
     }
@@ -60,47 +51,9 @@ public class NewsWebController {
     /**
      * 根据id查询新闻信息
      */
-    @RequestMapping(value = "/getWebNewsInfoById/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = "/getNewsInfoById/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public ApiResult getNewsInfoById(@PathVariable("id") String id) {
         return newsService.getWebNewsInfoById(id);
-    }
-
-    /**
-     * 添加评论
-     *
-     * @return
-     */
-    @RequestMapping(value = "/addMessageComment", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
-    public ApiResult addMessageComment(@RequestBody MessageCommentDTO messageCommentDTO) {
-        return messageCommentService.addMessageComment(messageCommentDTO);
-    }
-
-    /**
-     * 获取评论信息
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getMessageCommentList", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult getMessageCommentList() {
-        return messageCommentService.getMessageCommentList();
-    }
-
-    /**
-     * 获取房屋信息
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getHouseInfo", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult getHouseInfo() {
-        return houseService.getHouseInfoList();
-    }
-
-    /**
-     * 根据id查询房屋信息
-     */
-    @RequestMapping(value = "/getHouseInfoById/{id}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult getHouseInfoById(@PathVariable("id") String id) {
-        return houseService.getHouseDetailInfoById(id);
     }
 
     /**
@@ -111,26 +64,6 @@ public class NewsWebController {
     @RequestMapping(value = "/getViewSpotInfo", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
     public ApiResult getViewSpotInfo() {
         return viewSpotService.getViewSpotInfo();
-    }
-
-    /**
-     * 获取团队信息
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getTeamInfoList", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult getTeamInfoList() {
-        return userPropertystaffService.getTeamInfoList();
-    }
-
-    /**
-     * 获取游客信息
-     *
-     * @return
-     */
-    @RequestMapping(value = "/getTouristInfoList", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult getTouristInfoList() {
-        return userPropertystaffService.getTouristInfoList();
     }
 
     /**

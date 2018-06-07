@@ -57,7 +57,7 @@ public class NewsEntity {
     }
 
     @Basic
-    @Column(name = "NEWS_CONTENT", length = 10000)
+    @Column(name = "NEWS_CONTENT")
     public String getNewsContent() {
         return newsContent;
     }

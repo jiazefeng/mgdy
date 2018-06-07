@@ -3,6 +3,7 @@ package com.mgdy.vesta.application.inf;
 import com.mgdy.vesta.application.DTO.TeamDTO;
 import com.mgdy.vesta.application.DTO.TouristDTO;
 import com.mgdy.vesta.application.DTO.UserPropertystaffDTO;
+import com.mgdy.vesta.application.DTO.WechatDTO;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
 import com.mgdy.vesta.domain.model.RoleViewmodelEntity;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
@@ -205,5 +206,5 @@ public interface UserPropertystaffService {
      */
     ApiResult getTouristInfoList();
 
-    UserTokenEntity GetLoginByWeChatCode(String code);
+    ApiResult GetLoginByWeChatCode(String code, WechatDTO wechatDTO);
 }
