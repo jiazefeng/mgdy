@@ -95,15 +95,15 @@ public class WeixinAPIController {
         return videoService.getVideosByUserId(userId);
     }
 
-    @RequestMapping(value = "/loginWechat/{code}", produces = "application/json;charset=UTF-8", method = RequestMethod.GET)
-    public ApiResult loginByWechat(@PathVariable("code") String code, HttpServletRequest request, HttpServletResponse response, @Valid WechatDTO wechatDTO) {
+    @RequestMapping(value = "/loginWechat", produces = "application/json;charset=UTF-8", method = RequestMethod.POST)
+    public ApiResult loginByWechat(@RequestBody WechatDTO wechatDTO) {
         try {
             //2、验证code是否存在
-            if (code == null || "".equals(code.trim())) {
+            if (wechatDTO.getCode() == null || "".equals(wechatDTO.getCode().trim())) {
                 System.out.println("----------loginWechat---------20201");
                 return new ErrorApiResult(20201, "Wechat code is last!");
             } else {
-                return userPropertystaffService.GetLoginByWeChatCode(code, wechatDTO);
+                return userPropertystaffService.GetLoginByWeChatCode(wechatDTO.getCode(), wechatDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();

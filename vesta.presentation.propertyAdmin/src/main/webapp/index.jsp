@@ -3,7 +3,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
-    <title>蒙古大营管理平台</title>
+    <title>奔跑吧草原</title>
     <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -56,7 +56,7 @@
             <div>
                 <div class="header-left">
                     <div class="logo">
-                        <a href="#" class="fl logo block mt20 ml50"><img src="./static/images/ui/logo.png"></a></div>
+                        <%--<a href="#" class="fl logo block mt20 ml50"><img src="./static/images/ui/logo.png"></a></div>--%>
                     </div>
                     <div class="clearfix"></div>
                 </div>

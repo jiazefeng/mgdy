@@ -4,6 +4,7 @@ import com.mgdy.vesta.application.video.DTO.VideoDTO;
 import com.mgdy.vesta.application.video.DTO.VideoReturnDTO;
 import com.mgdy.vesta.application.video.inf.VideoService;
 import com.mgdy.vesta.common.restHTTPResult.ApiResult;
+import com.mgdy.vesta.common.restHTTPResult.ErrorApiResult;
 import com.mgdy.vesta.common.restHTTPResult.SuccessApiResult;
 import com.mgdy.vesta.domain.model.UserPropertyStaffEntity;
 import com.mgdy.vesta.domain.video.model.VideoEntity;
@@ -37,6 +38,10 @@ public class VideoServiceImpl implements VideoService {
         if (!file.isEmpty()) {
 //            filePath = FileUpload.uploadFile(request, file);
             filePath = UploadFile.imgUpload(file, IMAGE_SERVER_URL);
+        }
+        System.out.println(filePath);
+        if(filePath.isEmpty()){
+            return new ErrorApiResult(404,"文件为空");
         }
         return new SuccessApiResult(filePath);
     }

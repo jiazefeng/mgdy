@@ -72,7 +72,8 @@ public class HouseServiceImpl implements HouseService {
             if (f) {
                 if (houseDetailImages != null) {
                     for (MultipartFile houseFile : houseDetailImages) {
-                        String houseImgUrl = FileUpload.upload(req, houseFile, imgType);
+                        String houseImgUrl = UploadFile.imgUpload(houseFile, IMAGE_SERVER_URL);
+//                        String houseImgUrl = FileUpload.upload(req, houseFile, imgType);
                         HouseImageEntity houseImageEntity = new HouseImageEntity();
                         houseImageEntity.setImageId(IdGen.uuid());
                         houseImageEntity.setHouseId(houseEntity.getHouseId());
@@ -133,7 +134,8 @@ public class HouseServiceImpl implements HouseService {
                 if (houseDetailImages != null && !houseDetailImages[0].isEmpty()) {
                     houseRepository.deleteHouseImageInfoById(houseEntity.getHouseId());
                     for (MultipartFile houseFile : houseDetailImages) {
-                        String houseImgUrl = FileUpload.upload(req, houseFile, imgType);
+                        String houseImgUrl = UploadFile.imgUpload(houseFile, IMAGE_SERVER_URL);
+//                        String houseImgUrl = FileUpload.upload(req, houseFile, imgType);
                         HouseImageEntity houseImageEntity = new HouseImageEntity();
                         houseImageEntity.setImageId(IdGen.uuid());
                         houseImageEntity.setHouseId(houseEntity.getHouseId());
